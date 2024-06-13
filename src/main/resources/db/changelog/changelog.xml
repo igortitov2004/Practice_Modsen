@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="database_init" author="Fyodor">
+        <createTable tableName="users">
+            <column autoIncrement="true" name="u_id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="u_firstname" type="varchar(256)"/>
+            <column name="u_lastname" type="varchar(256)"/>
+            <column name="u_gender" type="varchar(64)"/>
+            <column name="u_login" type="varchar(128)"/>
+            <column name="u_password_hash" type="varchar(256)"/>
+            <column name="u_phone_number" type="varchar(128)"/>
+            <column name="u_birth_date" type="datetime"/>
+            <column name="u_city" type="varchar(256)"/>
+            <column name="u_street" type="varchar(256)"/>
+            <column name="u_house_num" type="varchar(128)"/>
+            <column name="u_apartment_num" type="varchar(128)"/>
+            <column name="u_email" type="varchar(256)"/>
+        </createTable>
+        <createTable tableName="orders">
+            <column autoIncrement="true" name="ord_id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="ord_user" type="int"/>
+            <column name="ord_price" type="decimal(11,2)"/>
+            <column name="ord_status" type="varchar(128)"/>
+            <column name="ord_creation_date" type="datetime"/>
+        </createTable>
+        <createTable tableName="order_items">
+            <column autoIncrement="true" name="it_id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="it_product" type="int"/>
+            <column name="it_order" type="int"/>
+            <column name="it_count" type="smallint"/>
+        </createTable>
+        <createTable tableName="products">
+            <column autoIncrement="true" name="p_id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="p_category" type="int"/>
+            <column name="p_ingredients" type="varchar(2048)"/>
+            <column name="p_price" type="decimal(10,2)"/>
+            <column name="p_desc" type="varchar(2048)"/>
+            <column name="p_weight" type="smallint"/>
+            <column name="p_caloric_value" type="smallint"/>
+        </createTable>
+        <createTable tableName="categories">
+            <column autoIncrement="true" name="c_id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="c_name" type="varchar(256)"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="products"
+                                 baseColumnNames="p_category"
+                                 constraintName="FK_products_categories"
+                                 referencedTableName="categories"
+                                 referencedColumnNames="c_id"/>
+
+        <addForeignKeyConstraint baseTableName="order_items"
+                                 baseColumnNames="it_product"
+                                 constraintName="FK_order_items_products"
+                                 referencedTableName="products"
+                                 referencedColumnNames="p_id"/>
+        <addForeignKeyConstraint baseTableName="order_items"
+                                 baseColumnNames="it_order"
+                                 constraintName="FK_order_items_orders"
+                                 referencedTableName="orders"
+                                 referencedColumnNames="ord_id"/>
+        <addForeignKeyConstraint baseTableName="orders"
+                                 baseColumnNames="ord_user"
+                                 constraintName="FK_orders_users"
+                                 referencedTableName="users"
+                                 referencedColumnNames="u_id"/>
+    </changeSet>
+
+</databaseChangeLog>

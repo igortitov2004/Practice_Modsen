@@ -15,12 +15,18 @@
     <description>practice</description>
     <properties>
         <java.version>17</java.version>
+        <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
         <liquibase-core.version>4.26.0</liquibase-core.version>
     </properties>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${org.mapstruct.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -34,6 +40,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
@@ -58,6 +65,11 @@
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
             <version>${liquibase-core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

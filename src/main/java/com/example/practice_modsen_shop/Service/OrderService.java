@@ -2,9 +2,10 @@ package com.example.practice_modsen_shop.Service;
 
 import com.example.practice_modsen_shop.DTO.OrderRequestTo;
 import com.example.practice_modsen_shop.DTO.OrderResponseTo;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
-
+@Component
 public class OrderService implements IService<OrderRequestTo, OrderResponseTo> {
 
     @Override

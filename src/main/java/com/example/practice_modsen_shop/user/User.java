@@ -16,7 +16,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "u_id")
-    private int id;
+    private Long id;
 
     @Column(name = "u_firstname")
     private String firstName;
@@ -25,7 +25,7 @@ public class User {
     private String lastName;
 
     @Column(name = "u_gender")
-    private String gender;
+    private Gender gender;
 
     @Column(name = "u_login")
     private String login;
@@ -46,10 +46,10 @@ public class User {
     private String street;
 
     @Column(name = "u_house_num")
-    private String houseNumber;
+    private int houseNumber;
 
     @Column(name = "u_apartment_num")
-    private String apartmentNumber;
+    private int apartmentNumber;
 
     @Column(name = "u_email")
     private String email;

@@ -1,5 +1,6 @@
 package com.example.practice_modsen_shop.entities;
 
+import com.example.practice_modsen_shop.entities.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,7 +23,7 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ord_id")
-    private int id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "u_id")
@@ -32,7 +33,7 @@ public class Order {
     private BigDecimal price;
 
     @Column(name = "ord_status")
-    private String status;
+    private OrderStatus status;
 
     @Column(name = "ord_creation_date")
     private Date creationDate;

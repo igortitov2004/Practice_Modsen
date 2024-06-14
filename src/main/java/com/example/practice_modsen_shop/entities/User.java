@@ -1,5 +1,6 @@
 package com.example.practice_modsen_shop.entities;
 
+import com.example.practice_modsen_shop.entities.enums.Gender;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,7 +20,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "u_id")
-    private int id;
+    private Long id;
 
     @Column(name = "u_firstname")
     private String firstname;
@@ -28,7 +29,7 @@ public class User {
     private String lastname;
 
     @Column(name = "u_gender")
-    private String gender;
+    private Gender gender;
 
     @Column(name = "u_login")
     private String login;
@@ -52,7 +53,7 @@ public class User {
     private String houseNumber;
 
     @Column(name = "u_apartment_num")
-    private String apartmentNumber;
+    private int apartmentNumber;
 
     @Column(name = "u_email")
     private String email;

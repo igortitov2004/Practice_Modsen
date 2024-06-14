@@ -1,8 +1,8 @@
-package com.example.practice_modsen_shop.Controllers;
+package com.example.practice_modsen_shop.controllers;
 
-import com.example.practice_modsen_shop.DTO.OrderItemRequestTo;
-import com.example.practice_modsen_shop.DTO.OrderItemResponseTo;
-import com.example.practice_modsen_shop.Service.IService;
+import com.example.practice_modsen_shop.dto.OrderItemRequestTo;
+import com.example.practice_modsen_shop.dto.OrderItemResponseTo;
+import com.example.practice_modsen_shop.services.ICrudService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
@@ -17,7 +17,7 @@ import java.util.List;
 public class OrderItemController {
 
     @Autowired
-    private IService<OrderItemRequestTo, OrderItemResponseTo> orderItemService;
+    private ICrudService<OrderItemRequestTo, OrderItemResponseTo> orderItemService;
 
     @GetMapping("/{id}")
     public ResponseEntity<OrderItemResponseTo> read(@PathVariable Long id) {

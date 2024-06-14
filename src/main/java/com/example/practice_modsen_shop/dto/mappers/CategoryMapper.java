@@ -1,10 +1,6 @@
-package com.example.practice_modsen_shop.mappers;
+package com.example.practice_modsen_shop.dto.mappers;
 
-import com.example.practice_modsen_shop.dto.CategoryRequestTo;
-import com.example.practice_modsen_shop.dto.CategoryResponseTo;
 import org.mapstruct.Mapper;
-
-import java.util.List;
 
 @Mapper(componentModel="spring")
 public interface CategoryMapper {

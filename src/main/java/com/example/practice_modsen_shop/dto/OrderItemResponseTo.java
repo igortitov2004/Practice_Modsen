@@ -1,5 +1,4 @@
-package com.example.practice_modsen_shop.DTO;
-
+package com.example.practice_modsen_shop.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,7 +7,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class OrderItemRequestTo {
+public class OrderItemResponseTo {
+
     private Long id;
 
     private Long productId;

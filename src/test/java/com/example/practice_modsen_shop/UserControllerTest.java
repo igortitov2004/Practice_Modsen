@@ -1,16 +1,13 @@
 package com.example.practice_modsen_shop;
 
-import com.example.practice_modsen_shop.Controllers.OrderController;
-import com.example.practice_modsen_shop.Controllers.UserController;
-import com.example.practice_modsen_shop.DTO.OrderItemResponseTo;
-import com.example.practice_modsen_shop.DTO.UserRequestTo;
-import com.example.practice_modsen_shop.DTO.UserResponseTo;
-import com.example.practice_modsen_shop.Service.IService;
+import com.example.practice_modsen_shop.controllers.UserController;
+import com.example.practice_modsen_shop.dto.UserRequestTo;
+import com.example.practice_modsen_shop.dto.UserResponseTo;
+import com.example.practice_modsen_shop.services.ICrudService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -38,7 +35,7 @@ public class UserControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private IService<UserRequestTo, UserResponseTo> userService;
+    private ICrudService<UserRequestTo, UserResponseTo> userService;
 
     @BeforeEach
     public void setup() {

@@ -1,17 +1,13 @@
 package com.example.practice_modsen_shop.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class CategoryRequestTo {
     private Long id;
     private String name;
-
-    public CategoryRequestTo() {
-    }
-
-    public CategoryRequestTo(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
 }

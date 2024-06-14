@@ -1,0 +1,18 @@
+{
+  "users": [
+    {
+      "firstName": "Stanislav",
+      "lastName": "Bybikov",
+      "gender": "male",
+      "login": "login",
+      "passwordHash": "",
+      "phoneNumber": "",
+      "birthDate": "2019-12-11T11:40:49Z",
+      "city": "",
+      "street": "",
+      "houseNumber": "",
+      "apartmentNumber": "",
+      "email": ""
+    }
+  ]
+}

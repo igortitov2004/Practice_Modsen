@@ -1,8 +1,6 @@
-package com.example.practice_modsen_shop.DTO;
+package com.example.practice_modsen_shop.dto.mappers;
 
-import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface OrderMapper {

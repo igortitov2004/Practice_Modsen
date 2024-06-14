@@ -1,4 +1,4 @@
-package com.example.practice_modsen_shop.DTO;
+package com.example.practice_modsen_shop.dto;
 
 
 import lombok.Getter;
@@ -10,8 +10,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
-public class UserResponseTo {
-
+public class UserRequestTo {
     private Long id;
 
     private String email;

@@ -1,13 +1,13 @@
-package com.example.practice_modsen_shop.Service;
+package com.example.practice_modsen_shop.services;
 
-import com.example.practice_modsen_shop.DTO.UserRequestTo;
-import com.example.practice_modsen_shop.DTO.UserResponseTo;
+import com.example.practice_modsen_shop.dto.UserRequestTo;
+import com.example.practice_modsen_shop.dto.UserResponseTo;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
-public class UserService implements IService<UserRequestTo, UserResponseTo> {
+public class UserService implements ICrudService<UserRequestTo, UserResponseTo> {
 
     @Override
     public UserResponseTo save(UserRequestTo item) {

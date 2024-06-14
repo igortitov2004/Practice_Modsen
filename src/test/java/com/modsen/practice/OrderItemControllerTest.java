@@ -1,10 +1,10 @@
 package com.example.practice_modsen_shop;
 
 
-import com.example.practice_modsen_shop.Controllers.OrderItemController;
-import com.example.practice_modsen_shop.DTO.OrderItemRequestTo;
-import com.example.practice_modsen_shop.DTO.OrderItemResponseTo;
-import com.example.practice_modsen_shop.Service.IService;
+import com.example.practice_modsen_shop.controllers.OrderItemController;
+import com.example.practice_modsen_shop.dto.OrderItemRequestTo;
+import com.example.practice_modsen_shop.dto.OrderItemResponseTo;
+import com.example.practice_modsen_shop.services.ICrudService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,7 +35,7 @@ public class OrderItemControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private IService<OrderItemRequestTo, OrderItemResponseTo> orderItemService;
+    private ICrudService<OrderItemRequestTo, OrderItemResponseTo> orderItemService;
 
 
     @BeforeEach

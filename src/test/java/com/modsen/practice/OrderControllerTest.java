@@ -1,25 +1,22 @@
 package com.example.practice_modsen_shop;
 
 
-import com.example.practice_modsen_shop.Controllers.OrderController;
-import com.example.practice_modsen_shop.DTO.OrderRequestTo;
-import com.example.practice_modsen_shop.DTO.OrderResponseTo;
-import com.example.practice_modsen_shop.Service.IService;
+import com.example.practice_modsen_shop.controllers.OrderController;
+import com.example.practice_modsen_shop.dto.OrderRequestTo;
+import com.example.practice_modsen_shop.dto.OrderResponseTo;
+import com.example.practice_modsen_shop.services.ICrudService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,8 +29,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 
 @WebMvcTest(OrderController.class)
 public class OrderControllerTest {
@@ -41,7 +36,7 @@ public class OrderControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private IService<OrderRequestTo, OrderResponseTo> orderService;
+    private ICrudService<OrderRequestTo, OrderResponseTo> orderService;
 
 
     @BeforeEach

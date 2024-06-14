@@ -1,12 +1,12 @@
-package com.example.practice_modsen_shop.Service;
+package com.example.practice_modsen_shop.services;
 
-import com.example.practice_modsen_shop.DTO.OrderItemRequestTo;
-import com.example.practice_modsen_shop.DTO.OrderItemResponseTo;
+import com.example.practice_modsen_shop.dto.OrderItemRequestTo;
+import com.example.practice_modsen_shop.dto.OrderItemResponseTo;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 @Component
-public class OrderItemService implements IService<OrderItemRequestTo, OrderItemResponseTo> {
+public class OrderItemService implements ICrudService<OrderItemRequestTo, OrderItemResponseTo> {
 
     @Override
     public OrderItemResponseTo save(OrderItemRequestTo item) {

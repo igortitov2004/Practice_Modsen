@@ -1,4 +1,4 @@
-package com.example.practice_modsen_shop.DTO;
+package com.example.practice_modsen_shop.dto.mappers;
 
 import org.mapstruct.Mapper;
 

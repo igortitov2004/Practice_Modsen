@@ -1,6 +1,6 @@
 package com.example.practice_modsen_shop.Controllers;
 
-import com.example.practice_modsen_shop.DTO.OrderItemResponseTo;
+
 import com.example.practice_modsen_shop.DTO.OrderRequestTo;
 import com.example.practice_modsen_shop.DTO.OrderResponseTo;
 import com.example.practice_modsen_shop.Service.IService;
@@ -22,52 +22,32 @@ public class OrderController {
 
     @GetMapping("/{id}")
     public ResponseEntity<OrderResponseTo> read(@PathVariable Long id) {
-        try {
-            OrderResponseTo order = orderService.getById(id);
-            return new ResponseEntity<OrderResponseTo>(order, HttpStatusCode.valueOf(200));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+        return new ResponseEntity<>(orderService.getById(id), HttpStatusCode.valueOf(200));
     }
 
     @GetMapping()
-    public ResponseEntity<List<OrderResponseTo>> readAll(@RequestParam int pageNumber, @RequestParam(required = false, defaultValue = "10") int pageSize, @RequestParam String sortBy, @RequestParam String sortOrder) {
-        try {
-            List<OrderResponseTo> orderTos = orderService.getAll(pageNumber, pageSize, sortBy, sortOrder);
-            return new ResponseEntity<>(orderTos, HttpStatusCode.valueOf(200));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+    public ResponseEntity<List<OrderResponseTo>> readAll(
+            @RequestParam int pageNumber,
+            @RequestParam(required = false, defaultValue = "10") int pageSize,
+            @RequestParam String sortBy,
+            @RequestParam String sortOrder) {
+        return new ResponseEntity<>(orderService.getAll(pageNumber, pageSize, sortBy, sortOrder),
+                HttpStatusCode.valueOf(200));
     }
 
     @PostMapping()
     public ResponseEntity<OrderResponseTo> create(@RequestBody OrderRequestTo order) {
-        try {
-            OrderResponseTo orderResponseTo = orderService.save(order);
-            return new ResponseEntity<OrderResponseTo>(orderResponseTo, HttpStatusCode.valueOf(201));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+        return new ResponseEntity<>(orderService.save(order), HttpStatusCode.valueOf(201));
     }
 
     @PutMapping()
     public ResponseEntity<OrderResponseTo> update(@RequestBody OrderRequestTo order) {
-        try {
-            OrderResponseTo orderResponseTo = orderService.update(order);
-            return new ResponseEntity<OrderResponseTo>(orderResponseTo, HttpStatusCode.valueOf(200));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+        return new ResponseEntity<>(orderService.update(order), HttpStatusCode.valueOf(200));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<OrderResponseTo> delete(@PathVariable Long id) {
-        try {
-            OrderResponseTo orderResponseTo = orderService.delete(id);
-            return new ResponseEntity<OrderResponseTo>(orderResponseTo, HttpStatusCode.valueOf(204));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+        return new ResponseEntity<>(orderService.delete(id), HttpStatusCode.valueOf(204));
     }
 
 

@@ -24,52 +24,31 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseTo> read(@PathVariable Long id) {
-        try {
-            UserResponseTo userTo = userService.getById(id);
-
-            return new ResponseEntity<>(userTo, HttpStatusCode.valueOf(200));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+        return new ResponseEntity<>(userService.getById(id), HttpStatusCode.valueOf(200));
     }
 
     @GetMapping()
-    public ResponseEntity<List<UserResponseTo>> readAll(@RequestParam int pageNumber, @RequestParam(required = false, defaultValue = "10") int pageSize, @RequestParam String sortBy, @RequestParam String sortOrder) {
-        try {
-            List<UserResponseTo> userTos = userService.getAll(pageNumber, pageSize, sortBy, sortOrder);
-            return new ResponseEntity<>(userTos, HttpStatusCode.valueOf(200));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+    public ResponseEntity<List<UserResponseTo>> readAll(
+            @RequestParam int pageNumber,
+            @RequestParam(required = false, defaultValue = "10") int pageSize,
+            @RequestParam String sortBy,
+            @RequestParam String sortOrder) {
+        return new ResponseEntity<>(userService.getAll(pageNumber, pageSize, sortBy, sortOrder),
+                HttpStatusCode.valueOf(200));
     }
 
     @PostMapping
     public ResponseEntity<UserResponseTo> create(@RequestBody UserRequestTo user) {
-        try {
-            UserResponseTo userTo = userService.save(user);
-            return new ResponseEntity<>(userTo, HttpStatusCode.valueOf(201));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+        return new ResponseEntity<>(userService.save(user), HttpStatusCode.valueOf(201));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<UserResponseTo> delete(@PathVariable Long id) {
-        try {
-            UserResponseTo userTo = userService.delete(id);
-            return new ResponseEntity<>(userTo, HttpStatusCode.valueOf(204));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+        return new ResponseEntity<>(userService.delete(id), HttpStatusCode.valueOf(204));
     }
 
     @PutMapping()
     public ResponseEntity<UserResponseTo> update(@RequestBody UserRequestTo user) {
-        try {
-            UserResponseTo userTo = userService.update(user);
-            return new ResponseEntity<>(userTo, HttpStatusCode.valueOf(200));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+        return new ResponseEntity<>(userService.update(user), HttpStatusCode.valueOf(200));
     }
 }

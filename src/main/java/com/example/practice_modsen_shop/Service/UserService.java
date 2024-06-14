@@ -2,9 +2,11 @@ package com.example.practice_modsen_shop.Service;
 
 import com.example.practice_modsen_shop.DTO.UserRequestTo;
 import com.example.practice_modsen_shop.DTO.UserResponseTo;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class UserService implements IService<UserRequestTo, UserResponseTo> {
 
     @Override

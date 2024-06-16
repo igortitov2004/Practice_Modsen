@@ -26,6 +26,9 @@ public class Product {
     @JoinColumn(name = "c_id")
     private Category category;
 
+    @Column(name = "p_name")
+    private String name;
+
     @Column(name = "p_ingredients")
     private String ingredients;
 
@@ -41,6 +44,6 @@ public class Product {
     @Column(name = "p_caloric_value")
     private Short caloricValue;
 
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "id",cascade = CascadeType.ALL)
     private Set<OrderItem> orderItems;
 }

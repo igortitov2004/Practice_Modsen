@@ -78,5 +78,47 @@
                                  referencedTableName="users"
                                  referencedColumnNames="u_id"/>
     </changeSet>
+    <changeSet id="database_update" author="Fyodor">
+
+        <!-- Users Table -->
+        <addNotNullConstraint tableName="users" columnName="u_firstname"/>
+        <addNotNullConstraint tableName="users" columnName="u_lastname"/>
+        <addNotNullConstraint tableName="users" columnName="u_gender"/>
+        <addNotNullConstraint tableName="users" columnName="u_login"/>
+        <addNotNullConstraint tableName="users" columnName="u_password_hash"/>
+        <addNotNullConstraint tableName="users" columnName="u_phone_number"/>
+        <addNotNullConstraint tableName="users" columnName="u_birth_date"/>
+        <addColumn tableName="users">
+            <column name="u_role" type="varchar(128)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+
+        <!-- Orders Table -->
+        <addNotNullConstraint tableName="orders" columnName="ord_user"/>
+        <addNotNullConstraint tableName="orders" columnName="ord_price"/>
+        <addNotNullConstraint tableName="orders" columnName="ord_status"/>
+        <addNotNullConstraint tableName="orders" columnName="ord_creation_date"/>
+
+        <!-- Order Items Table -->
+        <addNotNullConstraint tableName="order_items" columnName="it_product"/>
+        <addNotNullConstraint tableName="order_items" columnName="it_order"/>
+        <addNotNullConstraint tableName="order_items" columnName="it_count"/>
+
+        <!-- Products Table -->
+        <addNotNullConstraint tableName="products" columnName="p_category"/>
+        <addNotNullConstraint tableName="products" columnName="p_ingredients"/>
+        <addNotNullConstraint tableName="products" columnName="p_price"/>
+        <addNotNullConstraint tableName="products" columnName="p_weight"/>
+        <addNotNullConstraint tableName="products" columnName="p_caloric_value"/>
+        <addColumn tableName="products">
+            <column name="p_name" type="varchar(1024)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+
+        <!--Categories Table -->
+        <addNotNullConstraint tableName="categories" columnName="c_name"/>
+    </changeSet>
 
 </databaseChangeLog>

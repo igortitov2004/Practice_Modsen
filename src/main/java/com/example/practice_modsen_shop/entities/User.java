@@ -1,6 +1,7 @@
 package com.example.practice_modsen_shop.entities;
 
 import com.example.practice_modsen_shop.entities.enums.Gender;
+import com.example.practice_modsen_shop.entities.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,6 +18,7 @@ import java.sql.Date;
 @Entity
 @Table(name = "users")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "u_id")
@@ -36,6 +38,9 @@ public class User {
 
     @Column(name = "u_password_hash")
     private String passwordHash;
+
+    @Column(name = "u_role")
+    private UserRole role;
 
     @Column(name = "u_phone_number")
     private String phoneNumber;

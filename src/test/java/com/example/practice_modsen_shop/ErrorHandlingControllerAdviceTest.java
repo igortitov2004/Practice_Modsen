@@ -29,20 +29,11 @@ public class ErrorHandlingControllerAdviceTest {
     }
 
     @Test
-    public void testHandleArithmeticException() throws Exception {
-        mockMvc.perform(get("/test/arithmetic-exception"))
+    public void testHandleRuntimeException() throws Exception {
+        mockMvc.perform(get("/test/runtime-exception"))
                 .andExpect(status().isInternalServerError())
-                .andExpect(content().string("division by zero"));
+                .andExpect(content().string("A runtime exception occurred: runtime exception"));
     }
-
-    @Test
-    public void testArrayIndexOutOfBoundsException() throws Exception {
-        mockMvc.perform(get("/test/array_index_out_of_bounds_exception"))
-                .andExpect(status().isInternalServerError())
-                .andExpect(content().string("index goes beyond the array boundary"));
-    }
-
-    //Other errors by analogy
 
     @Test
     public void testHandleConstraintViolationException() throws Exception {

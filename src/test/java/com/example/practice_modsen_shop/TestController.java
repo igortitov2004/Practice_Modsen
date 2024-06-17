@@ -13,24 +13,15 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Path;
 import jakarta.validation.metadata.ConstraintDescriptor;
 
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 public class TestController {
 
-    @GetMapping("/test/arithmetic-exception")
-    public void throwArithmeticException() {
-        throw new ArithmeticException("division by zero");
+    @GetMapping("/test/runtime-exception")
+    public void throwRuntimeException() {
+        throw new RuntimeException("runtime exception");
     }
-
-    @GetMapping("/test/array_index_out_of_bounds_exception")
-    public void throwArrayIndexOutOfBoundsException() {
-        throw new ArrayIndexOutOfBoundsException("index goes beyond the array boundary");
-    }
-
-    //Other errors by analogy
 
     @GetMapping("/test/constraint-violation-exception")
     public void throwConstraintViolationException(@RequestParam @NotBlank String field) {

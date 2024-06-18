@@ -1,7 +1,12 @@
-package com.example.practice_modsen_shop.auth;
+package com.modsen.practice.controller;
 
+import com.modsen.practice.auth.AuthenticationRequest;
+import com.modsen.practice.auth.AuthenticationResponse;
+import com.modsen.practice.auth.AuthenticationService;
+import com.modsen.practice.auth.RegisterRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,23 +16,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request){
+    public ResponseEntity<AuthenticationResponse> register(@Valid @RequestBody RegisterRequest request) {
         return ResponseEntity.ok(authenticationService.register(request));
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request){
+    public ResponseEntity<AuthenticationResponse> authenticate(@Valid @RequestBody AuthenticationRequest request) {
         return ResponseEntity.ok(authenticationService.authenticate(request));
     }
 
     @PostMapping("/refresh-token")
     public void refreshToken(HttpServletRequest request,
-                             HttpServletResponse response){
+                             HttpServletResponse response) {
         authenticationService.refreshToken(request, response);
     }
 }

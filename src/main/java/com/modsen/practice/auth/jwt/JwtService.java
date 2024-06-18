@@ -1,10 +1,11 @@
-package com.example.practice_modsen_shop.jwt;
+package com.modsen.practice.auth.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +17,12 @@ import java.util.function.Function;
 
 @Service
 public class JwtService {
-    private static final String SECRET_KEY = "24104d6c319b492a6365d08de742196a60b23d084b360e9bb7b72e0b1e3a12c3";
-    private static final long JWT_EXPIRATION = 86400000;
-    private static final long REFRESH_EXPIRATION = 604800000;
+    @Value("${application.security.jwt.secret-key}")
+    private String secretKey;
+    @Value("${application.security.jwt.expiration}")
+    private long jwtExpiration;
+    @Value("${application.security.jwt.refresh-token.expiration}")
+    private long refreshExpiration;
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
@@ -38,13 +42,13 @@ public class JwtService {
             UserDetails userDetails,
             Map<String, Object> extraClaims
     ) {
-       return buildToken(userDetails,extraClaims,JWT_EXPIRATION);
+       return buildToken(userDetails,extraClaims, jwtExpiration);
     }
 
     public String generateRefreshToken(
             UserDetails userDetails
     ) {
-        return buildToken(userDetails,new HashMap<>(),REFRESH_EXPIRATION);
+        return buildToken(userDetails,new HashMap<>(), refreshExpiration);
     }
 
     private String buildToken(
@@ -85,7 +89,7 @@ public class JwtService {
     }
 
     private Key getSingInKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 }

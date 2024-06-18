@@ -1,5 +1,6 @@
-package com.example.practice_modsen_shop.configuration;
+package com.modsen.practice.configuration;
 
+import com.modsen.practice.auth.UserVODetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,14 +16,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class Config {
 
-    @Bean
-    public UserDetailsService userDetailsService(){
-        return null;
-    }
+    private final UserVODetailsService userVODetailsService;
     @Bean
     public AuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userDetailsService());
+        authenticationProvider.setUserDetailsService(userVODetailsService);
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         return authenticationProvider;
     }

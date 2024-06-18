@@ -39,15 +39,11 @@ public class OrderControllerTest {
     @MockBean
     private IOrderService orderService;
 
-
-    @BeforeEach
-    void setup() {
-        MockitoAnnotations.openMocks(this);
-    }
+    private static final String CONTROLLER_PATH = "/api/orders";
 
     @Test
     @WithMockUser
-    void testGetOrders() throws Exception {
+    void testGetByIdOrders() throws Exception {
         List<OrderResponse> responseTos = new ArrayList<>();
         OrderResponse orderMock = new OrderResponse();
         orderMock.setId(2L);
@@ -59,7 +55,7 @@ public class OrderControllerTest {
         when(orderService.getAll(2, 2, "price", "desc")).thenReturn(responseTos);
 
 
-        mockMvc.perform(get("/orders")
+        mockMvc.perform(get(CONTROLLER_PATH)
                         .param("pageNumber", "2")
                         .param("pageSize", "2")
                         .param("sortBy", "price")
@@ -68,14 +64,14 @@ public class OrderControllerTest {
                 .andExpect(status().is(200))
                 .andExpect(jsonPath("$[0].id", is(orderMock.getId().intValue())))
                 .andExpect(jsonPath("$[0].userId", is(orderMock.getUserId().intValue())))
-                .andExpect(jsonPath("$[0].price", is(orderMock.getPrice())))
-                .andExpect(jsonPath("$[0].status", is(orderMock.getStatus())));
+                .andExpect(jsonPath("$[0].price", is(orderMock.getPrice().doubleValue())))
+                .andExpect(jsonPath("$[0].status", is(orderMock.getStatus().name())));
     }
 
 
     @Test
     @WithMockUser
-    void testGetOrderById() throws Exception {
+    void testGetByIdOrderById() throws Exception {
         OrderResponse orderMock = new OrderResponse();
         orderMock.setId(2L);
         orderMock.setUserId(3L);
@@ -86,12 +82,12 @@ public class OrderControllerTest {
         when(orderService.getById(2L)).thenReturn(orderMock);
 
 
-        mockMvc.perform(get("/orders/{id}", 2).with(csrf()))
+        mockMvc.perform(get(CONTROLLER_PATH + "/{id}", 2).with(csrf()))
                 .andExpect(status().is(200))
                 .andExpect(jsonPath("$.id", is(orderMock.getId().intValue())))
                 .andExpect(jsonPath("$.userId", is(orderMock.getUserId().intValue())))
-                .andExpect(jsonPath("$.price", is(orderMock.getPrice())))
-                .andExpect(jsonPath("$.status", is(orderMock.getStatus())));
+                .andExpect(jsonPath("$.price", is(orderMock.getPrice().doubleValue())))
+                .andExpect(jsonPath("$.status", is(orderMock.getStatus().name())));
     }
 
     @Test
@@ -107,12 +103,12 @@ public class OrderControllerTest {
         when(orderService.delete(2L)).thenReturn(orderMock);
 
 
-        mockMvc.perform(delete("/orders/{id}", 2).with(csrf()))
+        mockMvc.perform(delete(CONTROLLER_PATH + "/{id}", 2).with(csrf()))
                 .andExpect(status().is(204))
                 .andExpect(jsonPath("$.id", is(orderMock.getId().intValue())))
                 .andExpect(jsonPath("$.userId", is(orderMock.getUserId().intValue())))
-                .andExpect(jsonPath("$.price", is(orderMock.getPrice())))
-                .andExpect(jsonPath("$.status", is(orderMock.getStatus())));
+                .andExpect(jsonPath("$.price", is(orderMock.getPrice().doubleValue())))
+                .andExpect(jsonPath("$.status", is(orderMock.getStatus().name())));
 
     }
 
@@ -136,20 +132,20 @@ public class OrderControllerTest {
 
         when(orderService.update(any())).thenReturn(orderMock);
 
-        mockMvc.perform(put("/orders").with(csrf())
+        mockMvc.perform(put(CONTROLLER_PATH).with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().registerModule(new JavaTimeModule()).writeValueAsString(orderRequestMock)))
                 .andExpect(status().is(200))
                 .andExpect(jsonPath("$.id", is(orderMock.getId().intValue())))
                 .andExpect(jsonPath("$.userId", is(orderMock.getUserId().intValue())))
-                .andExpect(jsonPath("$.price", is(orderMock.getPrice())))
-                .andExpect(jsonPath("$.status", is(orderMock.getStatus())));
+                .andExpect(jsonPath("$.price", is(orderMock.getPrice().doubleValue())))
+                .andExpect(jsonPath("$.status", is(orderMock.getStatus().name())));
 
     }
 
     @Test
     @WithMockUser
-    void testCreateOrder() throws Exception {
+    void testSaveOrder() throws Exception {
 
         OrderResponse orderMock = new OrderResponse();
         orderMock.setId(2L);
@@ -167,14 +163,14 @@ public class OrderControllerTest {
 
         when(orderService.save(any())).thenReturn(orderMock);
 
-        mockMvc.perform(post("/orders").with(csrf())
+        mockMvc.perform(post(CONTROLLER_PATH).with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().registerModule(new JavaTimeModule()).writeValueAsString(orderRequestMock)))
                 .andExpect(status().is(201))
                 .andExpect(jsonPath("$.id", is(orderMock.getId().intValue())))
                 .andExpect(jsonPath("$.userId", is(orderMock.getUserId().intValue())))
-                .andExpect(jsonPath("$.price", is(orderMock.getPrice())))
-                .andExpect(jsonPath("$.status", is(orderMock.getStatus())));
+                .andExpect(jsonPath("$.price", is(orderMock.getPrice().doubleValue())))
+                .andExpect(jsonPath("$.status", is(orderMock.getStatus().name())));
     }
 
 }

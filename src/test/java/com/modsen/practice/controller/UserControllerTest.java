@@ -28,7 +28,7 @@ import static org.mockito.Mockito.when;
 
 
 @WebMvcTest(UserController.class)
-public class UserControllerTest {
+class UserControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -36,14 +36,11 @@ public class UserControllerTest {
     @MockBean
     private IUserService userService;
 
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.openMocks(this);
-    }
+    private static final String CONTROLLER_PATH = "/api/users";
 
     @Test
     @WithMockUser
-    void testGetUserById() throws Exception {
+    void testGetByIdUserById() throws Exception {
         UserResponse userMock = new UserResponse();
         userMock.setId(12L);
         userMock.setName("TestName");
@@ -52,7 +49,7 @@ public class UserControllerTest {
         when(userService.getById(12L)).thenReturn(userMock);
 
 
-        mockMvc.perform(get("/users/{id}", 12))
+        mockMvc.perform(get(CONTROLLER_PATH + "/{id}", 12))
                 .andExpect(status().is(200))
                 .andExpect(jsonPath("$.id", is(userMock.getId().intValue())))
                 .andExpect(jsonPath("$.email", is(userMock.getEmail())))
@@ -61,7 +58,7 @@ public class UserControllerTest {
 
     @Test
     @WithMockUser
-    void testGetUsers() throws Exception {
+    void testGetByIdUsers() throws Exception {
         List<UserResponse> responseTos = new ArrayList<>();
         UserResponse userMock = new UserResponse();
         userMock.setId(12L);
@@ -72,7 +69,7 @@ public class UserControllerTest {
         when(userService.getAll(2, 2, "", "")).thenReturn(responseTos);
 
 
-        mockMvc.perform(get("/users")
+        mockMvc.perform(get(CONTROLLER_PATH)
                         .param("pageNumber", "2")
                         .param("pageSize", "2")
                         .param("sortBy", "")
@@ -95,7 +92,7 @@ public class UserControllerTest {
         when(userService.delete(12L)).thenReturn(userMock);
 
 
-        mockMvc.perform(delete("/users/{id}", 12).with(csrf()))
+        mockMvc.perform(delete(CONTROLLER_PATH + "/{id}", 12).with(csrf()))
                 .andExpect(status().is(204))
                 .andExpect(jsonPath("$.id", is(userMock.getId().intValue())))
                 .andExpect(jsonPath("$.email", is(userMock.getEmail())))
@@ -120,7 +117,7 @@ public class UserControllerTest {
         when(userService.update(any())).thenReturn(responseTo);
 
 
-        mockMvc.perform(put("/users").with(csrf())
+        mockMvc.perform(put(CONTROLLER_PATH).with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().registerModule(new JavaTimeModule()).writeValueAsString(requestTo)))
                 .andExpect(status().is(200))
@@ -131,7 +128,7 @@ public class UserControllerTest {
 
     @Test
     @WithMockUser
-    void testCreateUser() throws Exception {
+    void testSaveUser() throws Exception {
 
         UserRequest requestTo = new UserRequest();
         requestTo.setId(12L);
@@ -146,7 +143,7 @@ public class UserControllerTest {
 
         when(userService.save(any())).thenReturn(responseTo);
 
-        mockMvc.perform(post("/users")
+        mockMvc.perform(post(CONTROLLER_PATH)
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().registerModule(new JavaTimeModule()).writeValueAsString(requestTo)))

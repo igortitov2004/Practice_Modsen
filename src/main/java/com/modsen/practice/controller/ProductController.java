@@ -1,43 +1,52 @@
 package com.modsen.practice.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.modsen.practice.dto.ProductRequest;
+import com.modsen.practice.dto.ProductResponse;
+import com.modsen.practice.service.IProductService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @RestController
-@RequestMapping("/products")
+@RequestMapping("/api/products")
 public class ProductController {
-    @Autowired
-    ICrudService<ProductRequestTo, ProductResponseTo> productService;
+
+    private final IProductService productService;
 
     @GetMapping
-    public ResponseEntity<List<ProductResponseTo>> getAll(@RequestParam(required = false, defaultValue = "0") Integer pageNumber,
-                                                           @RequestParam(required = false, defaultValue = "10") Integer pageSize,
-                                                           @RequestParam(required = false, defaultValue = "id") String sortBy,
-                                                           @RequestParam(required = false, defaultValue = "desc") String sortOrder) {
-        return ResponseEntity.status(200).body(productService.getAll(pageNumber, pageSize, sortBy, sortOrder));
+    public ResponseEntity<List<ProductResponse>> getAll(@RequestParam(required = false, defaultValue = "0") Integer pageNumber,
+                                                        @RequestParam(required = false, defaultValue = "10") Integer pageSize,
+                                                        @RequestParam(required = false, defaultValue = "id") String sortBy,
+                                                        @RequestParam(required = false, defaultValue = "desc") String sortOrder) {
+        List<ProductResponse> response = productService.getAll(pageNumber, pageSize, sortBy, sortOrder);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductResponseTo> getById(@PathVariable Long id) {
-        return ResponseEntity.status(200).body(productService.getById(id));
+    public ResponseEntity<ProductResponse> getById(@PathVariable Long id) {
+        ProductResponse response = productService.getById(id);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ProductResponseTo> delete(@PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(productService.delete(id));
+    public ResponseEntity<ProductResponse> delete(@PathVariable Long id) {
+        ProductResponse response = productService.delete(id);
+        return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
     }
 
     @PostMapping
-    public ResponseEntity<ProductResponseTo> save(@RequestBody ProductRequestTo product) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(product));
+    public ResponseEntity<ProductResponse> save(@RequestBody ProductRequest product) {
+        ProductResponse response = productService.save(product);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @PutMapping
-    public ResponseEntity<ProductResponseTo> update(@RequestBody ProductRequestTo product) {
-        return ResponseEntity.status(HttpStatus.OK).body(productService.update(product));
+    public ResponseEntity<ProductResponse> update(@RequestBody ProductRequest product) {
+        ProductResponse response = productService.update(product);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

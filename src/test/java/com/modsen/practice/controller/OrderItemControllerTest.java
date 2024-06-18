@@ -29,22 +29,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(OrderItemController.class)
-public class OrderItemControllerTest {
+class OrderItemControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
     private IOrderItemService orderItemService;
 
-
-    @BeforeEach
-    void setup() {
-        MockitoAnnotations.openMocks(this);
-    }
+    private static final String CONTROLLER_PATH = "/api/order_items";
 
     @Test
     @WithMockUser
-    void testGetOrderItemById() throws Exception {
+    void testGetByIdOrderItemById() throws Exception {
         OrderItemResponse orderItemMock = new OrderItemResponse();
         orderItemMock.setId(2L);
         orderItemMock.setCount((short)5);
@@ -54,17 +50,17 @@ public class OrderItemControllerTest {
         when(orderItemService.getById(2L)).thenReturn(orderItemMock);
 
 
-        mockMvc.perform(get("/order_items/{id}", 2).with(csrf()))
+        mockMvc.perform(get(CONTROLLER_PATH + "/{id}", 2).with(csrf()))
                 .andExpect(status().is(200))
                 .andExpect(jsonPath("$.id", is(orderItemMock.getId().intValue())))
-                .andExpect(jsonPath("$.count", is(orderItemMock.getCount())))
+                .andExpect(jsonPath("$.count", is(((int) orderItemMock.getCount()))))
                 .andExpect(jsonPath("$.orderId", is(orderItemMock.getOrderId().intValue())))
                 .andExpect(jsonPath("$.productId", is(orderItemMock.getProductId().intValue())));
     }
 
     @Test
     @WithMockUser
-    void testGetOrderItems() throws Exception {
+    void testGetByIdOrderItems() throws Exception {
         List<OrderItemResponse> responseTos = new ArrayList<>();
         OrderItemResponse orderItemMock = new OrderItemResponse();
         orderItemMock.setId(2L);
@@ -76,7 +72,7 @@ public class OrderItemControllerTest {
         when(orderItemService.getAll(2, 2, "count", "desc")).thenReturn(responseTos);
 
 
-        mockMvc.perform(get("/order_items")
+        mockMvc.perform(get(CONTROLLER_PATH)
                         .param("pageNumber", "2")
                         .param("pageSize", "2")
                         .param("sortBy", "count")
@@ -84,7 +80,7 @@ public class OrderItemControllerTest {
                         .with(csrf()))
                 .andExpect(status().is(200))
                 .andExpect(jsonPath("$[0].id", is(orderItemMock.getId().intValue())))
-                .andExpect(jsonPath("$[0].count", is(orderItemMock.getCount())))
+                .andExpect(jsonPath("$[0].count", is(((int) orderItemMock.getCount()))))
                 .andExpect(jsonPath("$[0].orderId", is(orderItemMock.getOrderId().intValue())))
                 .andExpect(jsonPath("$[0].productId", is(orderItemMock.getProductId().intValue())));
     }
@@ -101,10 +97,10 @@ public class OrderItemControllerTest {
         when(orderItemService.delete(2L)).thenReturn(orderItemMock);
 
 
-        mockMvc.perform(delete("/order_items/{id}", 2).with(csrf()))
+        mockMvc.perform(delete(CONTROLLER_PATH + "/{id}", 2).with(csrf()))
                 .andExpect(status().is(204))
                 .andExpect(jsonPath("$.id", is(orderItemMock.getId().intValue())))
-                .andExpect(jsonPath("$.count", is(orderItemMock.getCount())))
+                .andExpect(jsonPath("$.count", is(((int) orderItemMock.getCount()))))
                 .andExpect(jsonPath("$.orderId", is(orderItemMock.getOrderId().intValue())))
                 .andExpect(jsonPath("$.productId", is(orderItemMock.getProductId().intValue())));
     }
@@ -127,19 +123,19 @@ public class OrderItemControllerTest {
 
         when(orderItemService.update(any())).thenReturn(orderItemMock);
 
-        mockMvc.perform(put("/order_items").with(csrf())
+        mockMvc.perform(put(CONTROLLER_PATH).with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(orderItemRequestMock)))
                 .andExpect(status().is(200))
                 .andExpect(jsonPath("$.id", is(orderItemMock.getId().intValue())))
-                .andExpect(jsonPath("$.count", is(orderItemMock.getCount())))
+                .andExpect(jsonPath("$.count", is(((int) orderItemMock.getCount()))))
                 .andExpect(jsonPath("$.orderId", is(orderItemMock.getOrderId().intValue())))
                 .andExpect(jsonPath("$.productId", is(orderItemMock.getProductId().intValue())));
     }
 
     @Test
     @WithMockUser
-    void testCreateOrderItem() throws Exception {
+    void testSaveOrderItem() throws Exception {
 
         OrderItemResponse orderItemMock = new OrderItemResponse();
         orderItemMock.setId(2L);
@@ -155,12 +151,12 @@ public class OrderItemControllerTest {
 
         when(orderItemService.save(any())).thenReturn(orderItemMock);
 
-        mockMvc.perform(post("/order_items").with(csrf())
+        mockMvc.perform(post(CONTROLLER_PATH).with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(orderItemRequestMock)))
                 .andExpect(status().is(201))
                 .andExpect(jsonPath("$.id", is(orderItemMock.getId().intValue())))
-                .andExpect(jsonPath("$.count", is(orderItemMock.getCount())))
+                .andExpect(jsonPath("$.count", is(((int) orderItemMock.getCount()))))
                 .andExpect(jsonPath("$.orderId", is(orderItemMock.getOrderId().intValue())))
                 .andExpect(jsonPath("$.productId", is(orderItemMock.getProductId().intValue())));
     }

@@ -5,7 +5,6 @@ import com.modsen.practice.dto.UserRequest;
 import com.modsen.practice.dto.UserResponse;
 import com.modsen.practice.service.IUserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,13 +20,13 @@ public class UserController {
     private final IUserService userService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponse> read(@PathVariable Long id) {
+    public ResponseEntity<UserResponse> getById(@PathVariable Long id) {
         UserResponse userResponse = userService.getById(id);
         return new ResponseEntity<>(userResponse, HttpStatusCode.valueOf(200));
     }
 
     @GetMapping()
-    public ResponseEntity<List<UserResponse>> readAll(
+    public ResponseEntity<List<UserResponse>> getAll(
             @RequestParam int pageNumber,
             @RequestParam(required = false, defaultValue = "10") int pageSize,
             @RequestParam String sortBy,
@@ -37,7 +36,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserResponse> create(@RequestBody UserRequest user) {
+    public ResponseEntity<UserResponse> save(@RequestBody UserRequest user) {
         UserResponse userResponse = userService.save(user);
         return new ResponseEntity<>(userResponse, HttpStatusCode.valueOf(201));
     }

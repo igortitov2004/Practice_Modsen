@@ -8,10 +8,10 @@
         <version>3.3.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.example</groupId>
-    <artifactId>practice_modsen_shop</artifactId>
+    <groupId>com.modsen</groupId>
+    <artifactId>practice</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>practice_modsen_shop</name>
+    <name>practice</name>
     <description>practice_modsen_shop</description>
     <properties>
         <java.version>17</java.version>
@@ -39,6 +39,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>

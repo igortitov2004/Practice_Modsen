@@ -4,7 +4,6 @@ import com.modsen.practice.dto.OrderItemRequest;
 import com.modsen.practice.dto.OrderItemResponse;
 import com.modsen.practice.service.IOrderItemService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,13 +18,13 @@ public class OrderItemController {
     private final IOrderItemService orderItemService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<OrderItemResponse> read(@PathVariable Long id) {
+    public ResponseEntity<OrderItemResponse> getById(@PathVariable Long id) {
         OrderItemResponse orderItemResponse = orderItemService.getById(id);
         return new ResponseEntity<>(orderItemResponse, HttpStatusCode.valueOf(200));
     }
 
     @GetMapping()
-    public ResponseEntity<List<OrderItemResponse>> readAll(
+    public ResponseEntity<List<OrderItemResponse>> getAll(
             @RequestParam int pageNumber,
             @RequestParam(required = false, defaultValue = "10") int pageSize,
             @RequestParam String sortBy,
@@ -35,7 +34,7 @@ public class OrderItemController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderItemResponse> create(@RequestBody OrderItemRequest orderItem) {
+    public ResponseEntity<OrderItemResponse> save(@RequestBody OrderItemRequest orderItem) {
         OrderItemResponse orderItemResponse = orderItemService.save(orderItem);
         return new ResponseEntity<>(orderItemResponse, HttpStatusCode.valueOf(201));
 

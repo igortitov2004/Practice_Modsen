@@ -1,8 +1,9 @@
 package com.modsen.practice.controller;
 
-import com.modsen.practice.dto.CategoryRequestTo;
-import com.modsen.practice.dto.CategoryResponseTo;
+import com.modsen.practice.dto.CategoryRequest;
+import com.modsen.practice.dto.CategoryResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.modsen.practice.service.ICategoryService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,14 +18,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 
 @WebMvcTest(CategoryController.class)
 class CategoryControllerTest {
@@ -33,41 +32,43 @@ class CategoryControllerTest {
     private MockMvc mvc;
 
     @MockBean
-    private ICrudService<CategoryRequestTo, CategoryResponseTo> categoryService;
+    private ICategoryService categoryService;
 
-    private static final List<CategoryResponseTo> categoryResponseToList = new ArrayList<>();
+    private static final String CONTROLLER_PATH = "/api/categories";
+
+    private static final List<CategoryResponse> categoryResponseList = new ArrayList<>();
 
     @BeforeAll
-    public static void init() {
-        CategoryResponseTo categoryResponseTo1 = new CategoryResponseTo(1L, "2");
-        CategoryResponseTo categoryResponseTo2 = new CategoryResponseTo(7L, "6");
+    static void init() {
+        CategoryResponse categoryResponse1 = new CategoryResponse(1L, "2");
+        CategoryResponse categoryResponse2 = new CategoryResponse(7L, "6");
 
-        categoryResponseToList.add(categoryResponseTo1);
-        categoryResponseToList.add(categoryResponseTo2);
+        categoryResponseList.add(categoryResponse1);
+        categoryResponseList.add(categoryResponse2);
     }
 
     @Test
     @WithMockUser
-    public void testGetCategories() throws Exception {
-        when(categoryService.getAll(1, 2, "id", "desc")).thenReturn(categoryResponseToList);
+    void testGetCategories() throws Exception {
+        when(categoryService.getAll(1, 2, "id", "desc")).thenReturn(categoryResponseList);
 
-        mvc.perform(get("/categories").with(csrf())
+        mvc.perform(get(CONTROLLER_PATH).with(csrf())
                         .param("pageNumber", "1")
                         .param("pageSize", "2")
                         .param("sortBy", "id")
                         .param("sortOrder", "desc"))
                 .andExpect(status().is(HttpStatus.OK.value()))
-                .andExpect(jsonPath("$", hasSize(categoryResponseToList.size())))
+                .andExpect(jsonPath("$", hasSize(categoryResponseList.size())))
                 .andExpect(jsonPath("$[0].id").value(1))
                 .andExpect(jsonPath("$[0].name").value("2"));
     }
 
     @Test
     @WithMockUser
-    public void testGetCategoryById() throws Exception {
-        when(categoryService.getById(1L)).thenReturn(categoryResponseToList.get(0));
+    void testGetCategoryById() throws Exception {
+        when(categoryService.getById(1L)).thenReturn(categoryResponseList.get(0));
 
-        mvc.perform(get("/categories/{id}", 1).with(csrf()))
+        mvc.perform(get(CONTROLLER_PATH + "/{id}", 1).with(csrf()))
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.name").value("2"));
@@ -75,11 +76,11 @@ class CategoryControllerTest {
 
     @Test
     @WithMockUser
-    public void testCreateCategory() throws Exception {
-        CategoryRequestTo request = new CategoryRequestTo(1L, "2");
-        when(categoryService.save(any())).thenReturn(categoryResponseToList.get(0));
+    void testCreateCategory() throws Exception {
+        CategoryRequest request = new CategoryRequest(1L, "2");
+        when(categoryService.save(any())).thenReturn(categoryResponseList.get(0));
 
-        mvc.perform(post("/categories").with(csrf())
+        mvc.perform(post(CONTROLLER_PATH).with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(request)))
                 .andExpect(status().is(HttpStatus.CREATED.value()))
@@ -89,11 +90,11 @@ class CategoryControllerTest {
 
     @Test
     @WithMockUser
-    public void testUpdateCategory() throws Exception {
-        CategoryRequestTo request = new CategoryRequestTo(1L, "2");
-        when(categoryService.update(any())).thenReturn(categoryResponseToList.get(0));
+    void testUpdateCategory() throws Exception {
+        CategoryRequest request = new CategoryRequest(1L, "2");
+        when(categoryService.update(any())).thenReturn(categoryResponseList.get(0));
 
-        mvc.perform(put("/categories").with(csrf())
+        mvc.perform(put(CONTROLLER_PATH).with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(request)))
                 .andExpect(status().is(HttpStatus.OK.value()))
@@ -103,10 +104,10 @@ class CategoryControllerTest {
 
     @Test
     @WithMockUser
-    public void testDeleteCategory() throws Exception {
-        when(categoryService.delete(1L)).thenReturn(categoryResponseToList.get(0));
+    void testDeleteCategory() throws Exception {
+        when(categoryService.delete(1L)).thenReturn(categoryResponseList.get(0));
 
-        mvc.perform(delete("/categories/{id}", 1).with(csrf()))
+        mvc.perform(delete(CONTROLLER_PATH + "/{id}", 1).with(csrf()))
                 .andExpect(status().is(HttpStatus.NO_CONTENT.value()))
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.name").value("2"));

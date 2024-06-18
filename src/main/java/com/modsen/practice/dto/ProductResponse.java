@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class ProductResponse {
     private Long id;
     private Long category;
+    private String name;
     private String ingredients;
     private Double price;
     private String description;

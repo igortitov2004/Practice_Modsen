@@ -3,10 +3,8 @@ package com.modsen.practice.controller;
 
 import com.modsen.practice.dto.OrderRequest;
 import com.modsen.practice.dto.OrderResponse;
-import com.modsen.practice.entity.Order;
 import com.modsen.practice.service.IOrderService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,13 +20,13 @@ public class OrderController {
     private final IOrderService orderService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<OrderResponse> read(@PathVariable Long id) {
+    public ResponseEntity<OrderResponse> getById(@PathVariable Long id) {
         OrderResponse orderResponse = orderService.getById(id);
         return new ResponseEntity<>(orderResponse, HttpStatusCode.valueOf(200));
     }
 
     @GetMapping()
-    public ResponseEntity<List<OrderResponse>> readAll(
+    public ResponseEntity<List<OrderResponse>> getAll(
             @RequestParam int pageNumber,
             @RequestParam(required = false, defaultValue = "10") int pageSize,
             @RequestParam String sortBy,
@@ -38,7 +36,7 @@ public class OrderController {
     }
 
     @PostMapping()
-    public ResponseEntity<OrderResponse> create(@RequestBody OrderRequest order) {
+    public ResponseEntity<OrderResponse> save(@RequestBody OrderRequest order) {
         OrderResponse orderResponse = orderService.save(order);
         return new ResponseEntity<>(orderResponse, HttpStatusCode.valueOf(201));
     }

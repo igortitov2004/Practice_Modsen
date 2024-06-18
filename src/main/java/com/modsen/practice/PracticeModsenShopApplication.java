@@ -1,4 +1,4 @@
-package com.example.practice_modsen_shop;
+package com.modsen.practice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

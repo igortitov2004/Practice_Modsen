@@ -1,7 +1,5 @@
-package com.example.practice_modsen_shop.advice;
+package com.modsen.practice.exceptionhandler;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -11,17 +9,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import jakarta.validation.ConstraintViolationException;
-import java.time.LocalDateTime;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
-public class ErrorHandlingControllerAdvice {
-    @ExceptionHandler
+public class ExceptionHandlerControllerAdvice {
+
+    @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<String> handleRuntimeException(RuntimeException e){
         return new ResponseEntity<>("A runtime exception occurred: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
 
     @ResponseBody
     @ExceptionHandler(ConstraintViolationException.class)
@@ -41,30 +39,6 @@ public class ErrorHandlingControllerAdvice {
                 .map(error -> new Violation(error.getField(), error.getDefaultMessage()))
                 .collect(Collectors.toList());
         return new ValidationErrorResponse(violations);
-    }
-
-
-
-
-    @Getter
-    @RequiredArgsConstructor
-    public static class ValidationErrorResponse {
-        private final List<Violation> violations;
-    }
-
-    @Getter
-    @RequiredArgsConstructor
-    public static class Violation {
-        private final String fieldName;
-        private final String message;
-    }
-
-    @Getter
-    @RequiredArgsConstructor
-    public static class ErrorResponse {
-        private final int status;
-        private final String message;
-        private final LocalDateTime timestamp;
     }
 
 }

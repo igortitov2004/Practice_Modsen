@@ -1,22 +1,25 @@
-package com.example.practice_modsen_shop;
+package com.modsen.practice.repository;
 
-import com.example.practice_modsen_shop.entities.Category;
-import com.example.practice_modsen_shop.entities.Product;
-import com.example.practice_modsen_shop.repository.CategoryRepository;
-import com.example.practice_modsen_shop.repository.ProductRepository;
+import com.modsen.practice.entity.Category;
+import com.modsen.practice.entity.Product;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
+@AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
 public class ProductRepositoryTest {
 
     @Autowired
@@ -25,11 +28,23 @@ public class ProductRepositoryTest {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @BeforeEach
+    void setUp()
+    {
+        Category newCategory = new Category();
+        newCategory.setName("preparedCategory");
+        categoryRepository.save(newCategory);
+    }
     @Test
     void testCreateProductAndFindById() {
         Product toSaveProduct = new Product();
         toSaveProduct.setName("Saved product");
-
+        toSaveProduct.setIngredients(" ");
+        toSaveProduct.setDescription(" ");
+        toSaveProduct.setWeight((short) 1);
+        toSaveProduct.setCaloricValue((short) 12);
+        toSaveProduct.setPrice(BigDecimal.valueOf(12));
+        toSaveProduct.setCategory(categoryRepository.findAll().get(0));
         productRepository.save(toSaveProduct);
 
         assertTrue(productRepository.findById(toSaveProduct.getId()).isPresent());
@@ -40,7 +55,12 @@ public class ProductRepositoryTest {
     void testUpdateProduct() {
         Product newProduct = new Product();
         String newName = "changed";
-
+        newProduct.setIngredients(" ");
+        newProduct.setDescription(" ");
+        newProduct.setWeight((short) 1);
+        newProduct.setCaloricValue((short) 12);
+        newProduct.setPrice(BigDecimal.valueOf(12));
+        newProduct.setCategory(categoryRepository.findAll().get(0));
         newProduct.setName("New product");
 
         productRepository.save(newProduct);
@@ -58,6 +78,12 @@ public class ProductRepositoryTest {
     void testDeleteByIdProduct() {
         Product toDeleteProduct = new Product();
         toDeleteProduct.setName("to delete");
+        toDeleteProduct.setIngredients(" ");
+        toDeleteProduct.setDescription(" ");
+        toDeleteProduct.setWeight((short) 1);
+        toDeleteProduct.setCaloricValue((short) 12);
+        toDeleteProduct.setPrice(BigDecimal.valueOf(12));
+        toDeleteProduct.setCategory(categoryRepository.findAll().get(0));
 
         productRepository.save(toDeleteProduct);
         productRepository.deleteById(toDeleteProduct.getId());
@@ -69,6 +95,12 @@ public class ProductRepositoryTest {
     void testDeletedProduct() {
         Product toDeleteProduct = new Product();
         toDeleteProduct.setName("to delete");
+        toDeleteProduct.setIngredients(" ");
+        toDeleteProduct.setDescription(" ");
+        toDeleteProduct.setWeight((short) 1);
+        toDeleteProduct.setCaloricValue((short) 12);
+        toDeleteProduct.setPrice(BigDecimal.valueOf(12));
+        toDeleteProduct.setCategory(categoryRepository.findAll().get(0));
 
         productRepository.save(toDeleteProduct);
         productRepository.delete(toDeleteProduct);
@@ -84,30 +116,72 @@ public class ProductRepositoryTest {
 
         Product product = new Product();
         product.setName("Пепперони");
+        product.setCategory(categoryRepository.findAll().get(0));
+        product.setIngredients(" ");
+        product.setDescription(" ");
+        product.setWeight((short) 1);
+        product.setCaloricValue((short) 12);
+        product.setPrice(BigDecimal.valueOf(12));
         productRepository.save(product);
 
         product = new Product();
         product.setName("Цыпленок");
+        product.setCategory(categoryRepository.findAll().get(0));
+        product.setIngredients(" ");
+        product.setDescription(" ");
+        product.setWeight((short) 1);
+        product.setCaloricValue((short) 12);
+        product.setPrice(BigDecimal.valueOf(12));
         productRepository.save(product);
 
         product = new Product();
         product.setName("Цыпленок барбекю");
+        product.setCategory(categoryRepository.findAll().get(0));
+        product.setIngredients(" ");
+        product.setDescription(" ");
+        product.setWeight((short) 1);
+        product.setCaloricValue((short) 12);
+        product.setPrice(BigDecimal.valueOf(12));
         productRepository.save(product);
 
         product = new Product();
         product.setName("Диабло");
+        product.setCategory(categoryRepository.findAll().get(0));
+        product.setIngredients(" ");
+        product.setDescription(" ");
+        product.setWeight((short) 1);
+        product.setCaloricValue((short) 12);
+        product.setPrice(BigDecimal.valueOf(12));
         productRepository.save(product);
 
         product = new Product();
         product.setName("Бургер");
+        product.setCategory(categoryRepository.findAll().get(0));
+        product.setIngredients(" ");
+        product.setDescription(" ");
+        product.setWeight((short) 1);
+        product.setCaloricValue((short) 12);
+        product.setPrice(BigDecimal.valueOf(12));
         productRepository.save(product);
 
         product = new Product();
         product.setName("Деревенская");
+        product.setCategory(categoryRepository.findAll().get(0));
+        product.setIngredients(" ");
+        product.setDescription(" ");
+        product.setWeight((short) 1);
+        product.setCaloricValue((short) 12);
+        product.setPrice(BigDecimal.valueOf(12));
         productRepository.save(product);
 
         product = new Product();
         product.setName("4 сезона");
+        product.setCategory(categoryRepository.findAll().get(0));
+        product.setIngredients(" ");
+        product.setDescription(" ");
+        product.setWeight((short) 1);
+        product.setCaloricValue((short) 12);
+        product.setPrice(BigDecimal.valueOf(12));
         productRepository.save(product);
 
         products = new ArrayList<>(productRepository.findAll());
@@ -132,16 +206,32 @@ public class ProductRepositoryTest {
 
         Product product = new Product();
         product.setName("Пепперони");
+        product.setCategory(categoryRepository.findAll().get(0));
+        product.setIngredients(" ");
+        product.setDescription(" ");
+        product.setWeight((short) 1);
+        product.setCaloricValue((short) 12);
+        product.setPrice(BigDecimal.valueOf(12));
         productRepository.save(product);
 
         product = new Product();
         product.setName("Цыпленок");
         product.setCategory(category);
+        product.setIngredients(" ");
+        product.setDescription(" ");
+        product.setWeight((short) 1);
+        product.setCaloricValue((short) 12);
+        product.setPrice(BigDecimal.valueOf(12));
         productRepository.save(product);
 
         product = new Product();
         product.setName("Цыпленок барбекю");
         product.setCategory(category);
+        product.setIngredients(" ");
+        product.setDescription(" ");
+        product.setWeight((short) 1);
+        product.setCaloricValue((short) 12);
+        product.setPrice(BigDecimal.valueOf(12));
         productRepository.save(product);
 
         products = new ArrayList<>(productRepository.findAll()).stream()

@@ -1,7 +1,7 @@
-package com.example.practice_modsen_shop.repository;
+package com.modsen.practice.repository;
 
-import com.example.practice_modsen_shop.entities.Category;
-import com.example.practice_modsen_shop.entities.Product;
+import com.modsen.practice.entity.Category;
+import com.modsen.practice.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

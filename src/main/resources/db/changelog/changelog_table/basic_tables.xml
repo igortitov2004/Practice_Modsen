@@ -4,7 +4,7 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 <changeSet id="basic_tables_setup" author="Fyodor">
         <createTable tableName="users">
-            <column name="user_id" type="bigint">
+            <column name="user_id" autoIncrement="true" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="firstname" type="varchar"/>
@@ -23,7 +23,7 @@
             <column autoIncrement="true" name="order_id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="user" type="int"/>
+            <column name="user_id" type="int"/>
             <column name="price" type="decimal(11,2)"/>
             <column name="status" type="varchar"/>
             <column name="city" type="varchar"/>
@@ -37,8 +37,8 @@
             <column autoIncrement="true" name="order_item_id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="product" type="int"/>
-            <column name="order" type="int"/>
+            <column name="product_id" type="int"/>
+            <column name="order_id" type="int"/>
             <column name="count" type="smallint"/>
         </createTable>
 
@@ -46,11 +46,11 @@
             <column autoIncrement="true" name="product_id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="category" type="int"/>
+            <column name="category_id" type="int"/>
             <column name="name" type="varchar"/>
             <column name="ingredients" type="varchar"/>
             <column name="price" type="decimal(10,2)"/>
-            <column name="desc" type="varchar"/>
+            <column name="description" type="varchar"/>
             <column name="weight" type="smallint"/>
             <column name="caloric_value" type="smallint"/>
         </createTable>

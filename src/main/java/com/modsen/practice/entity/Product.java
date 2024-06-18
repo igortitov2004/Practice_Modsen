@@ -1,4 +1,4 @@
-package com.example.practice_modsen_shop.entities;
+package com.modsen.practice.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -19,31 +19,31 @@ import java.util.Set;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "p_id")
+    @Column(name = "product_id")
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "c_id")
+    @JoinColumn(name = "category_id")
     private Category category;
 
-    @Column(name = "p_name")
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "p_ingredients")
+    @Column(name = "ingredients")
     private String ingredients;
 
-    @Column(name = "p_price")
+    @Column(name = "price")
     private BigDecimal price;
 
-    @Column(name = "p_desc")
+    @Column(name = "desc")
     private String description;
 
-    @Column(name = "p_weight")
+    @Column(name = "weight")
     private Short weight;
 
-    @Column(name = "p_caloric_value")
+    @Column(name = "caloric_value")
     private Short caloricValue;
 
-    @OneToMany(mappedBy = "id",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product",fetch = FetchType.LAZY)
     private Set<OrderItem> orderItems;
 }

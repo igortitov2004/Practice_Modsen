@@ -1,4 +1,4 @@
-package com.example.practice_modsen_shop.entities;
+package com.modsen.practice.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -17,18 +17,18 @@ public class OrderItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "it_id")
+    @Column(name = "order_item_id")
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "p_id")
+    @JoinColumn(name = "product_id")
     private Product product;
 
     @ManyToOne
-    @JoinColumn(name = "ord_id")
+    @JoinColumn(name = "order_id")
     private Order order;
 
-    @Column(name = "it_count")
+    @Column(name = "count")
     private short count;
 
 

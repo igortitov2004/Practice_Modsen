@@ -1,4 +1,4 @@
-package com.example.practice_modsen_shop.entities.enums;
+package com.modsen.practice.enumeration;
 
 public enum OrderStatus {
     PENDING,

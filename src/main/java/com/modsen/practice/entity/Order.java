@@ -1,6 +1,6 @@
-package com.example.practice_modsen_shop.entities;
+package com.modsen.practice.entity;
 
-import com.example.practice_modsen_shop.entities.enums.OrderStatus;
+import com.modsen.practice.enumeration.OrderStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,23 +22,35 @@ public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ord_id")
+    @Column(name = "order_id")
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "u_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name = "ord_price")
+    @Column(name = "price")
     private BigDecimal price;
 
-    @Column(name = "ord_status")
+    @Column(name = "status")
     private OrderStatus status;
 
-    @Column(name = "ord_creation_date")
+    @Column(name = "city")
+    private String city;
+
+    @Column(name = "street")
+    private String street;
+
+    @Column(name = "house_num")
+    private String houseNumber;
+
+    @Column(name = "apartment_num")
+    private int apartmentNumber;
+
+    @Column(name = "creation_date")
     private Date creationDate;
 
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "order",fetch = FetchType.LAZY)
     private Set<OrderItem> orderItems;
 
 }

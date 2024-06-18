@@ -2,7 +2,6 @@ package com.modsen.practice.controller;
 
 import com.modsen.practice.dto.ProductRequestTo;
 import com.modsen.practice.dto.ProductResponseTo;
-import com.modsen.practice.service.ICrudService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

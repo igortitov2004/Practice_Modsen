@@ -1,11 +1,12 @@
 package com.modsen.practice.controller;
 
 
-import com.modsen.practice.dto.OrderRequestTo;
-import com.modsen.practice.dto.OrderResponseTo;
-import com.modsen.practice.service.ICrudService;
+import com.modsen.practice.dto.OrderRequest;
+import com.modsen.practice.dto.OrderResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.modsen.practice.enumeration.OrderStatus;
+import com.modsen.practice.service.IOrderService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
@@ -16,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,23 +37,23 @@ public class OrderControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private ICrudService<OrderRequestTo, OrderResponseTo> orderService;
+    private IOrderService orderService;
 
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
     @WithMockUser
-    public void testGetOrders() throws Exception {
-        List<OrderResponseTo> responseTos = new ArrayList<>();
-        OrderResponseTo orderMock = new OrderResponseTo();
+    void testGetOrders() throws Exception {
+        List<OrderResponse> responseTos = new ArrayList<>();
+        OrderResponse orderMock = new OrderResponse();
         orderMock.setId(2L);
         orderMock.setUserId(3L);
-        orderMock.setPrice(123.12);
-        orderMock.setStatus("Completed");
+        orderMock.setPrice(BigDecimal.valueOf(123.12));
+        orderMock.setStatus(OrderStatus.COMPLETED);
         responseTos.add(orderMock);
 
         when(orderService.getAll(2, 2, "price", "desc")).thenReturn(responseTos);
@@ -73,12 +75,12 @@ public class OrderControllerTest {
 
     @Test
     @WithMockUser
-    public void testGetOrderById() throws Exception {
-        OrderResponseTo orderMock = new OrderResponseTo();
+    void testGetOrderById() throws Exception {
+        OrderResponse orderMock = new OrderResponse();
         orderMock.setId(2L);
         orderMock.setUserId(3L);
-        orderMock.setPrice(123.12);
-        orderMock.setStatus("Completed");
+        orderMock.setPrice(BigDecimal.valueOf(123.12));
+        orderMock.setStatus(OrderStatus.COMPLETED);
 
 
         when(orderService.getById(2L)).thenReturn(orderMock);
@@ -94,12 +96,12 @@ public class OrderControllerTest {
 
     @Test
     @WithMockUser
-    public void testDeleteById() throws Exception {
-        OrderResponseTo orderMock = new OrderResponseTo();
+    void testDeleteById() throws Exception {
+        OrderResponse orderMock = new OrderResponse();
         orderMock.setId(2L);
         orderMock.setUserId(3L);
-        orderMock.setPrice(123.12);
-        orderMock.setStatus("Completed");
+        orderMock.setPrice(BigDecimal.valueOf(123.12));
+        orderMock.setStatus(OrderStatus.COMPLETED);
 
 
         when(orderService.delete(2L)).thenReturn(orderMock);
@@ -116,20 +118,20 @@ public class OrderControllerTest {
 
     @Test
     @WithMockUser
-    public void testUpdateOrder() throws Exception {
+    void testUpdateOrder() throws Exception {
 
-        OrderResponseTo orderMock = new OrderResponseTo();
+        OrderResponse orderMock = new OrderResponse();
         orderMock.setId(2L);
         orderMock.setUserId(3L);
-        orderMock.setPrice(123.12);
-        orderMock.setStatus("Completed");
+        orderMock.setPrice(BigDecimal.valueOf(123.12));
+        orderMock.setStatus(OrderStatus.COMPLETED);
 
 
-        OrderRequestTo orderRequestMock = new OrderRequestTo();
+        OrderRequest orderRequestMock = new OrderRequest();
         orderRequestMock.setId(2L);
         orderRequestMock.setUserId(3L);
-        orderRequestMock.setPrice(123.12);
-        orderRequestMock.setStatus("Completed");
+        orderRequestMock.setPrice(BigDecimal.valueOf(123.12));
+        orderRequestMock.setStatus(OrderStatus.COMPLETED);
 
 
         when(orderService.update(any())).thenReturn(orderMock);
@@ -147,20 +149,20 @@ public class OrderControllerTest {
 
     @Test
     @WithMockUser
-    public void testCreateOrder() throws Exception {
+    void testCreateOrder() throws Exception {
 
-        OrderResponseTo orderMock = new OrderResponseTo();
+        OrderResponse orderMock = new OrderResponse();
         orderMock.setId(2L);
         orderMock.setUserId(3L);
-        orderMock.setPrice(123.12);
-        orderMock.setStatus("Completed");
+        orderMock.setPrice(BigDecimal.valueOf(123.12));
+        orderMock.setStatus(OrderStatus.COMPLETED);
 
 
-        OrderRequestTo orderRequestMock = new OrderRequestTo();
+        OrderRequest orderRequestMock = new OrderRequest();
         orderRequestMock.setId(2L);
         orderRequestMock.setUserId(3L);
-        orderRequestMock.setPrice(123.12);
-        orderRequestMock.setStatus("Completed");
+        orderRequestMock.setPrice(BigDecimal.valueOf(123.12));
+        orderRequestMock.setStatus(OrderStatus.COMPLETED);
 
 
         when(orderService.save(any())).thenReturn(orderMock);

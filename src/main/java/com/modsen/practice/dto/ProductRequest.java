@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductResponseTo {
+public class ProductRequest{
     private Long id;
     private Long category;
     private String ingredients;

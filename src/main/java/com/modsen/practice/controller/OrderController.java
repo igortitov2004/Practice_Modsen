@@ -1,9 +1,10 @@
 package com.modsen.practice.controller;
 
 
-import com.modsen.practice.dto.OrderRequestTo;
-import com.modsen.practice.dto.OrderResponseTo;
-import com.modsen.practice.service.ICrudService;
+import com.modsen.practice.dto.OrderRequest;
+import com.modsen.practice.dto.OrderResponse;
+import com.modsen.practice.entity.Order;
+import com.modsen.practice.service.IOrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
@@ -14,40 +15,44 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/orders")
+@RequestMapping("/api/orders")
 public class OrderController {
 
-    @Autowired
-    private ICrudService<OrderRequestTo, OrderResponseTo> orderService;
+
+    private final IOrderService orderService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<OrderResponseTo> read(@PathVariable Long id) {
-        return new ResponseEntity<>(orderService.getById(id), HttpStatusCode.valueOf(200));
+    public ResponseEntity<OrderResponse> read(@PathVariable Long id) {
+        OrderResponse orderResponse = orderService.getById(id);
+        return new ResponseEntity<>(orderResponse, HttpStatusCode.valueOf(200));
     }
 
     @GetMapping()
-    public ResponseEntity<List<OrderResponseTo>> readAll(
+    public ResponseEntity<List<OrderResponse>> readAll(
             @RequestParam int pageNumber,
             @RequestParam(required = false, defaultValue = "10") int pageSize,
             @RequestParam String sortBy,
             @RequestParam String sortOrder) {
-        return new ResponseEntity<>(orderService.getAll(pageNumber, pageSize, sortBy, sortOrder),
-                HttpStatusCode.valueOf(200));
+        List<OrderResponse> orders = orderService.getAll(pageNumber, pageSize, sortBy, sortOrder);
+        return new ResponseEntity<>(orders, HttpStatusCode.valueOf(200));
     }
 
     @PostMapping()
-    public ResponseEntity<OrderResponseTo> create(@RequestBody OrderRequestTo order) {
-        return new ResponseEntity<>(orderService.save(order), HttpStatusCode.valueOf(201));
+    public ResponseEntity<OrderResponse> create(@RequestBody OrderRequest order) {
+        OrderResponse orderResponse = orderService.save(order);
+        return new ResponseEntity<>(orderResponse, HttpStatusCode.valueOf(201));
     }
 
     @PutMapping()
-    public ResponseEntity<OrderResponseTo> update(@RequestBody OrderRequestTo order) {
-        return new ResponseEntity<>(orderService.update(order), HttpStatusCode.valueOf(200));
+    public ResponseEntity<OrderResponse> update(@RequestBody OrderRequest order) {
+        OrderResponse orderResponse = orderService.update(order);
+        return new ResponseEntity<>(orderResponse, HttpStatusCode.valueOf(200));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<OrderResponseTo> delete(@PathVariable Long id) {
-        return new ResponseEntity<>(orderService.delete(id), HttpStatusCode.valueOf(204));
+    public ResponseEntity<OrderResponse> delete(@PathVariable Long id) {
+        OrderResponse orderResponse = orderService.delete(id);
+        return new ResponseEntity<>(orderResponse, HttpStatusCode.valueOf(204));
     }
 
 

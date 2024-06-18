@@ -1,8 +1,5 @@
 package com.modsen.practice.controller;
 
-import com.modsen.practice.dto.ProductRequestTo;
-import com.modsen.practice.dto.ProductResponseTo;
-import com.modsen.practice.service.ICrudService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

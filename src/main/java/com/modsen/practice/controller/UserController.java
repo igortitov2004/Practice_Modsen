@@ -1,9 +1,9 @@
 package com.modsen.practice.controller;
 
 
-import com.modsen.practice.dto.UserRequestTo;
-import com.modsen.practice.dto.UserResponseTo;
-import com.modsen.practice.service.ICrudService;
+import com.modsen.practice.dto.UserRequest;
+import com.modsen.practice.dto.UserResponse;
+import com.modsen.practice.service.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
@@ -14,39 +14,43 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
 
-    @Autowired
-    private ICrudService<UserRequestTo, UserResponseTo> userService;
+
+    private final IUserService userService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponseTo> read(@PathVariable Long id) {
-        return new ResponseEntity<>(userService.getById(id), HttpStatusCode.valueOf(200));
+    public ResponseEntity<UserResponse> read(@PathVariable Long id) {
+        UserResponse userResponse = userService.getById(id);
+        return new ResponseEntity<>(userResponse, HttpStatusCode.valueOf(200));
     }
 
     @GetMapping()
-    public ResponseEntity<List<UserResponseTo>> readAll(
+    public ResponseEntity<List<UserResponse>> readAll(
             @RequestParam int pageNumber,
             @RequestParam(required = false, defaultValue = "10") int pageSize,
             @RequestParam String sortBy,
             @RequestParam String sortOrder) {
-        return new ResponseEntity<>(userService.getAll(pageNumber, pageSize, sortBy, sortOrder),
-                HttpStatusCode.valueOf(200));
+        List<UserResponse> users = userService.getAll(pageNumber, pageSize, sortBy, sortOrder);
+        return new ResponseEntity<>(users, HttpStatusCode.valueOf(200));
     }
 
     @PostMapping
-    public ResponseEntity<UserResponseTo> create(@RequestBody UserRequestTo user) {
-        return new ResponseEntity<>(userService.save(user), HttpStatusCode.valueOf(201));
+    public ResponseEntity<UserResponse> create(@RequestBody UserRequest user) {
+        UserResponse userResponse = userService.save(user);
+        return new ResponseEntity<>(userResponse, HttpStatusCode.valueOf(201));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<UserResponseTo> delete(@PathVariable Long id) {
-        return new ResponseEntity<>(userService.delete(id), HttpStatusCode.valueOf(204));
+    public ResponseEntity<UserResponse> delete(@PathVariable Long id) {
+        UserResponse userResponse = userService.delete(id);
+        return new ResponseEntity<>(userResponse, HttpStatusCode.valueOf(204));
     }
 
     @PutMapping()
-    public ResponseEntity<UserResponseTo> update(@RequestBody UserRequestTo user) {
-        return new ResponseEntity<>(userService.update(user), HttpStatusCode.valueOf(200));
+    public ResponseEntity<UserResponse> update(@RequestBody UserRequest user) {
+        UserResponse userResponse = userService.update(user);
+        return new ResponseEntity<>(userResponse, HttpStatusCode.valueOf(200));
     }
 }

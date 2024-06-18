@@ -1,10 +1,10 @@
 package com.modsen.practice.controller;
 
-import com.modsen.practice.dto.UserRequestTo;
-import com.modsen.practice.dto.UserResponseTo;
-import com.modsen.practice.service.ICrudService;
+import com.modsen.practice.dto.UserRequest;
+import com.modsen.practice.dto.UserResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.modsen.practice.service.IUserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
@@ -34,7 +34,7 @@ public class UserControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private ICrudService<UserRequestTo, UserResponseTo> userService;
+    private IUserService userService;
 
     @BeforeEach
     public void setup() {
@@ -43,8 +43,8 @@ public class UserControllerTest {
 
     @Test
     @WithMockUser
-    public void testGetUserById() throws Exception {
-        UserResponseTo userMock = new UserResponseTo();
+    void testGetUserById() throws Exception {
+        UserResponse userMock = new UserResponse();
         userMock.setId(12L);
         userMock.setName("TestName");
         userMock.setEmail("check@mail.ru");
@@ -61,9 +61,9 @@ public class UserControllerTest {
 
     @Test
     @WithMockUser
-    public void testGetUsers() throws Exception {
-        List<UserResponseTo> responseTos = new ArrayList<>();
-        UserResponseTo userMock = new UserResponseTo();
+    void testGetUsers() throws Exception {
+        List<UserResponse> responseTos = new ArrayList<>();
+        UserResponse userMock = new UserResponse();
         userMock.setId(12L);
         userMock.setName("TestName");
         userMock.setEmail("check@mail.ru");
@@ -86,8 +86,8 @@ public class UserControllerTest {
 
     @Test
     @WithMockUser
-    public void testDeleteById() throws Exception {
-        UserResponseTo userMock = new UserResponseTo();
+    void testDeleteById() throws Exception {
+        UserResponse userMock = new UserResponse();
         userMock.setId(12L);
         userMock.setName("TestName");
         userMock.setEmail("check@mail.ru");
@@ -104,14 +104,14 @@ public class UserControllerTest {
 
     @Test
     @WithMockUser
-    public void testUpdateUser() throws Exception {
+    void testUpdateUser() throws Exception {
 
-        UserRequestTo requestTo = new UserRequestTo();
+        UserRequest requestTo = new UserRequest();
         requestTo.setId(12L);
         requestTo.setName("Updated Name");
         requestTo.setEmail("updated@email.com");
 
-        UserResponseTo responseTo = new UserResponseTo();
+        UserResponse responseTo = new UserResponse();
         responseTo.setId(12L);
         responseTo.setName("Updated Name");
         responseTo.setEmail("updated@email.com");
@@ -131,14 +131,14 @@ public class UserControllerTest {
 
     @Test
     @WithMockUser
-    public void testCreateUser() throws Exception {
+    void testCreateUser() throws Exception {
 
-        UserRequestTo requestTo = new UserRequestTo();
+        UserRequest requestTo = new UserRequest();
         requestTo.setId(12L);
         requestTo.setName("Updated Name");
         requestTo.setEmail("updated@email.com");
 
-        UserResponseTo responseTo = new UserResponseTo();
+        UserResponse responseTo = new UserResponse();
         responseTo.setId(12L);
         responseTo.setName("Updated Name");
         responseTo.setEmail("updated@email.com");

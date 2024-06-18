@@ -1,17 +1,14 @@
 package com.modsen.practice.dto;
 
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
+@Data
+@AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
-public class UserResponseTo {
-
+public class UserRequest {
     private Long id;
 
     private String email;

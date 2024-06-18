@@ -1,10 +1,10 @@
 package com.modsen.practice.controller;
 
 
-import com.modsen.practice.dto.OrderItemRequestTo;
-import com.modsen.practice.dto.OrderItemResponseTo;
-import com.modsen.practice.service.ICrudService;
+import com.modsen.practice.dto.OrderItemRequest;
+import com.modsen.practice.dto.OrderItemResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.modsen.practice.service.IOrderItemService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -34,20 +34,20 @@ public class OrderItemControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private ICrudService<OrderItemRequestTo, OrderItemResponseTo> orderItemService;
+    private IOrderItemService orderItemService;
 
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
     @WithMockUser
-    public void testGetOrderItemById() throws Exception {
-        OrderItemResponseTo orderItemMock = new OrderItemResponseTo();
+    void testGetOrderItemById() throws Exception {
+        OrderItemResponse orderItemMock = new OrderItemResponse();
         orderItemMock.setId(2L);
-        orderItemMock.setCount(5);
+        orderItemMock.setCount((short)5);
         orderItemMock.setOrderId(12L);
         orderItemMock.setProductId(45L);
 
@@ -64,11 +64,11 @@ public class OrderItemControllerTest {
 
     @Test
     @WithMockUser
-    public void testGetOrderItems() throws Exception {
-        List<OrderItemResponseTo> responseTos = new ArrayList<>();
-        OrderItemResponseTo orderItemMock = new OrderItemResponseTo();
+    void testGetOrderItems() throws Exception {
+        List<OrderItemResponse> responseTos = new ArrayList<>();
+        OrderItemResponse orderItemMock = new OrderItemResponse();
         orderItemMock.setId(2L);
-        orderItemMock.setCount(5);
+        orderItemMock.setCount((short)5);
         orderItemMock.setOrderId(12L);
         orderItemMock.setProductId(45L);
         responseTos.add(orderItemMock);
@@ -91,10 +91,10 @@ public class OrderItemControllerTest {
 
     @Test
     @WithMockUser
-    public void testDeleteById() throws Exception {
-        OrderItemResponseTo orderItemMock = new OrderItemResponseTo();
+    void testDeleteById() throws Exception {
+        OrderItemResponse orderItemMock = new OrderItemResponse();
         orderItemMock.setId(2L);
-        orderItemMock.setCount(5);
+        orderItemMock.setCount((short)5);
         orderItemMock.setOrderId(12L);
         orderItemMock.setProductId(45L);
 
@@ -111,17 +111,17 @@ public class OrderItemControllerTest {
 
     @Test
     @WithMockUser
-    public void testUpdateOrderItem() throws Exception {
+    void testUpdateOrderItem() throws Exception {
 
-        OrderItemResponseTo orderItemMock = new OrderItemResponseTo();
+        OrderItemResponse orderItemMock = new OrderItemResponse();
         orderItemMock.setId(2L);
-        orderItemMock.setCount(5);
+        orderItemMock.setCount((short) 5);
         orderItemMock.setOrderId(12L);
         orderItemMock.setProductId(45L);
 
-        OrderItemRequestTo orderItemRequestMock = new OrderItemRequestTo();
+        OrderItemRequest orderItemRequestMock = new OrderItemRequest();
         orderItemRequestMock.setId(2L);
-        orderItemRequestMock.setCount(5);
+        orderItemRequestMock.setCount((short)5);
         orderItemRequestMock.setOrderId(12L);
         orderItemRequestMock.setProductId(45L);
 
@@ -139,17 +139,17 @@ public class OrderItemControllerTest {
 
     @Test
     @WithMockUser
-    public void testCreateOrderItem() throws Exception {
+    void testCreateOrderItem() throws Exception {
 
-        OrderItemResponseTo orderItemMock = new OrderItemResponseTo();
+        OrderItemResponse orderItemMock = new OrderItemResponse();
         orderItemMock.setId(2L);
-        orderItemMock.setCount(5);
+        orderItemMock.setCount((short)5);
         orderItemMock.setOrderId(12L);
         orderItemMock.setProductId(45L);
 
-        OrderItemRequestTo orderItemRequestMock = new OrderItemRequestTo();
+        OrderItemRequest orderItemRequestMock = new OrderItemRequest();
         orderItemRequestMock.setId(2L);
-        orderItemRequestMock.setCount(5);
+        orderItemRequestMock.setCount((short)5);
         orderItemRequestMock.setOrderId(12L);
         orderItemRequestMock.setProductId(45L);
 

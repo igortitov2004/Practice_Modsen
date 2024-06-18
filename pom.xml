@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>practice_modsen_shop</artifactId>
+    <artifactId>practice</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>practice_modsen_shop</name>
-    <description>practice_modsen_shop</description>
+    <name>practice</name>
+    <description>practice</description>
     <properties>
         <java.version>17</java.version>
         <liquibase-core.version>4.26.0</liquibase-core.version>
@@ -34,7 +34,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>

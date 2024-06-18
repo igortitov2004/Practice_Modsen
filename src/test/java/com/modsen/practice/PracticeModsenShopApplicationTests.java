@@ -1,4 +1,4 @@
-package com.example.practice_modsen_shop;
+package com.modsen.practice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

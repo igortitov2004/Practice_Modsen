@@ -1,0 +1,65 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+<changeSet id="basic_tables_setup" author="Fyodor">
+        <createTable tableName="users">
+            <column name="user_id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="firstname" type="varchar"/>
+            <column name="lastname" type="varchar"/>
+            <column name="middle_name" type="varchar"/>
+            <column name="gender" type="varchar"/>
+            <column name="login" type="varchar"/>
+            <column name="password_hash" type="varchar"/>
+            <column name="role" type="varchar"/>
+            <column name="phone_number" type="varchar"/>
+            <column name="birth_date" type="datetime"/>
+            <column name="email" type="varchar"/>
+        </createTable>
+
+        <createTable tableName="orders">
+            <column autoIncrement="true" name="order_id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user" type="int"/>
+            <column name="price" type="decimal(11,2)"/>
+            <column name="status" type="varchar"/>
+            <column name="city" type="varchar"/>
+            <column name="street" type="varchar"/>
+            <column name="house_num" type="varchar"/>
+            <column name="apartment_num" type="varchar"/>
+            <column name="creation_date" type="datetime"/>
+        </createTable>
+
+        <createTable tableName="order_items">
+            <column autoIncrement="true" name="order_item_id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="product" type="int"/>
+            <column name="order" type="int"/>
+            <column name="count" type="smallint"/>
+        </createTable>
+
+        <createTable tableName="products">
+            <column autoIncrement="true" name="product_id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="category" type="int"/>
+            <column name="name" type="varchar"/>
+            <column name="ingredients" type="varchar"/>
+            <column name="price" type="decimal(10,2)"/>
+            <column name="desc" type="varchar"/>
+            <column name="weight" type="smallint"/>
+            <column name="caloric_value" type="smallint"/>
+        </createTable>
+
+        <createTable tableName="categories">
+            <column autoIncrement="true" name="category_id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar"/>
+        </createTable>
+</changeSet>
+</databaseChangeLog>

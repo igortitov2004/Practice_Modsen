@@ -1,4 +1,4 @@
-package com.example.practice_modsen_shop.configuration;
+package com.modsen.practice.configuration;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

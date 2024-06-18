@@ -1,4 +1,4 @@
-package com.example.practice_modsen_shop.auth;
+package com.modsen.practice.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

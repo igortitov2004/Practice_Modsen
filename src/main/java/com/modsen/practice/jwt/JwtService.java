@@ -1,4 +1,4 @@
-package com.example.practice_modsen_shop.jwt;
+package com.modsen.practice.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

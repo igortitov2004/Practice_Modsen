@@ -1,6 +1,6 @@
-package com.example.practice_modsen_shop.auth;
+package com.modsen.practice.auth;
 
-import com.example.practice_modsen_shop.jwt.JwtService;
+import com.modsen.practice.jwt.JwtService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

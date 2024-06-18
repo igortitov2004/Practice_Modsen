@@ -1,6 +1,6 @@
-package com.example.practice_modsen_shop.configuration;
+package com.modsen.practice.configuration;
 
-import com.example.practice_modsen_shop.jwt.JwtAuthenticationFilter;
+import com.modsen.practice.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

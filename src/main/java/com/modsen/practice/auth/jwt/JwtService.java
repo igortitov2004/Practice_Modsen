@@ -1,4 +1,4 @@
-package com.modsen.practice.jwt;
+package com.modsen.practice.auth.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

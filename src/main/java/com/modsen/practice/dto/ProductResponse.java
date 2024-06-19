@@ -4,16 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductResponse {
     private Long id;
-    private Long category;
+    private CategoryResponse category;
     private String name;
     private String ingredients;
-    private Double price;
+    private BigDecimal price;
     private String description;
-    private Integer weight;
-    private Integer caloric_value;
+    private Short weight;
+    private Short caloric_value;
 }

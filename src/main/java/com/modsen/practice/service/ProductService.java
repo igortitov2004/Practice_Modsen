@@ -12,6 +12,8 @@ public interface ProductService {
 
     List<ProductResponse> getAll(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
 
+    List<ProductResponse> getAllByCategoryId(Long categoryId, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
+
     ProductResponse save(ProductRequest request);
 
     ProductResponse delete(Long id);

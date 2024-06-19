@@ -13,6 +13,8 @@ public interface OrderService {
 
     List<OrderResponse> getAll(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
 
+    List<OrderResponse> getAllByUserId(Long userId,Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
+
     OrderResponse save(OrderRequest requestTo);
 
     OrderResponse delete(Long id);

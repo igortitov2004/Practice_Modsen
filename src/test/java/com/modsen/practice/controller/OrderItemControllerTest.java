@@ -4,6 +4,7 @@ package com.modsen.practice.controller;
 import com.modsen.practice.dto.OrderItemRequest;
 import com.modsen.practice.dto.OrderItemResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.modsen.practice.dto.ProductResponse;
 import com.modsen.practice.service.OrderItemService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,11 +42,13 @@ class OrderItemControllerTest {
     @Test
     @WithMockUser
     void testGetByIdOrderItemById() throws Exception {
+        ProductResponse productResponse = new ProductResponse();
+        productResponse.setId(20L);
         OrderItemResponse orderItemMock = new OrderItemResponse();
         orderItemMock.setId(2L);
         orderItemMock.setCount((short)5);
         orderItemMock.setOrderId(12L);
-        orderItemMock.setProductId(45L);
+        orderItemMock.setProduct(productResponse);
 
         when(orderItemService.getById(2L)).thenReturn(orderItemMock);
 
@@ -55,18 +58,20 @@ class OrderItemControllerTest {
                 .andExpect(jsonPath("$.id", is(orderItemMock.getId().intValue())))
                 .andExpect(jsonPath("$.count", is(((int) orderItemMock.getCount()))))
                 .andExpect(jsonPath("$.orderId", is(orderItemMock.getOrderId().intValue())))
-                .andExpect(jsonPath("$.productId", is(orderItemMock.getProductId().intValue())));
+                .andExpect(jsonPath("$.product.id", is(orderItemMock.getProduct().getId().intValue())));
     }
 
     @Test
     @WithMockUser
     void testGetByIdOrderItems() throws Exception {
+        ProductResponse productResponse = new ProductResponse();
+        productResponse.setId(20L);
         List<OrderItemResponse> responseTos = new ArrayList<>();
         OrderItemResponse orderItemMock = new OrderItemResponse();
         orderItemMock.setId(2L);
         orderItemMock.setCount((short)5);
         orderItemMock.setOrderId(12L);
-        orderItemMock.setProductId(45L);
+        orderItemMock.setProduct(productResponse);
         responseTos.add(orderItemMock);
 
         when(orderItemService.getAll(2, 2, "count", "desc")).thenReturn(responseTos);
@@ -82,17 +87,19 @@ class OrderItemControllerTest {
                 .andExpect(jsonPath("$[0].id", is(orderItemMock.getId().intValue())))
                 .andExpect(jsonPath("$[0].count", is(((int) orderItemMock.getCount()))))
                 .andExpect(jsonPath("$[0].orderId", is(orderItemMock.getOrderId().intValue())))
-                .andExpect(jsonPath("$[0].productId", is(orderItemMock.getProductId().intValue())));
+                .andExpect(jsonPath("$[0].product.id", is(orderItemMock.getProduct().getId().intValue())));
     }
 
     @Test
     @WithMockUser
     void testDeleteById() throws Exception {
+        ProductResponse productResponse = new ProductResponse();
+        productResponse.setId(20L);
         OrderItemResponse orderItemMock = new OrderItemResponse();
         orderItemMock.setId(2L);
         orderItemMock.setCount((short)5);
         orderItemMock.setOrderId(12L);
-        orderItemMock.setProductId(45L);
+        orderItemMock.setProduct(productResponse);
 
         when(orderItemService.delete(2L)).thenReturn(orderItemMock);
 
@@ -102,18 +109,20 @@ class OrderItemControllerTest {
                 .andExpect(jsonPath("$.id", is(orderItemMock.getId().intValue())))
                 .andExpect(jsonPath("$.count", is(((int) orderItemMock.getCount()))))
                 .andExpect(jsonPath("$.orderId", is(orderItemMock.getOrderId().intValue())))
-                .andExpect(jsonPath("$.productId", is(orderItemMock.getProductId().intValue())));
+                .andExpect(jsonPath("$.product.id", is(orderItemMock.getProduct().getId().intValue())));
     }
 
     @Test
     @WithMockUser
     void testUpdateOrderItem() throws Exception {
+        ProductResponse productResponse = new ProductResponse();
+        productResponse.setId(20L);
 
         OrderItemResponse orderItemMock = new OrderItemResponse();
         orderItemMock.setId(2L);
         orderItemMock.setCount((short) 5);
         orderItemMock.setOrderId(12L);
-        orderItemMock.setProductId(45L);
+        orderItemMock.setProduct(productResponse);
 
         OrderItemRequest orderItemRequestMock = new OrderItemRequest();
         orderItemRequestMock.setId(2L);
@@ -130,23 +139,25 @@ class OrderItemControllerTest {
                 .andExpect(jsonPath("$.id", is(orderItemMock.getId().intValue())))
                 .andExpect(jsonPath("$.count", is(((int) orderItemMock.getCount()))))
                 .andExpect(jsonPath("$.orderId", is(orderItemMock.getOrderId().intValue())))
-                .andExpect(jsonPath("$.productId", is(orderItemMock.getProductId().intValue())));
+                .andExpect(jsonPath("$.product.id", is(orderItemMock.getProduct().getId().intValue())));
     }
 
     @Test
     @WithMockUser
     void testSaveOrderItem() throws Exception {
 
+        ProductResponse productResponse = new ProductResponse();
+        productResponse.setId(20L);
         OrderItemResponse orderItemMock = new OrderItemResponse();
-        orderItemMock.setId(2L);
+        orderItemMock.setId(null);
         orderItemMock.setCount((short)5);
-        orderItemMock.setOrderId(12L);
-        orderItemMock.setProductId(45L);
+        orderItemMock.setOrderId(null);
+        orderItemMock.setProduct(productResponse);
 
         OrderItemRequest orderItemRequestMock = new OrderItemRequest();
-        orderItemRequestMock.setId(2L);
+        orderItemRequestMock.setId(null);
         orderItemRequestMock.setCount((short)5);
-        orderItemRequestMock.setOrderId(12L);
+        orderItemRequestMock.setOrderId(null);
         orderItemRequestMock.setProductId(45L);
 
         when(orderItemService.save(any())).thenReturn(orderItemMock);
@@ -155,9 +166,9 @@ class OrderItemControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(orderItemRequestMock)))
                 .andExpect(status().is(201))
-                .andExpect(jsonPath("$.id", is(orderItemMock.getId().intValue())))
+                .andExpect(jsonPath("$.id", is(orderItemMock.getId())))
                 .andExpect(jsonPath("$.count", is(((int) orderItemMock.getCount()))))
-                .andExpect(jsonPath("$.orderId", is(orderItemMock.getOrderId().intValue())))
-                .andExpect(jsonPath("$.productId", is(orderItemMock.getProductId().intValue())));
+                .andExpect(jsonPath("$.orderId", is(orderItemMock.getOrderId())))
+                .andExpect(jsonPath("$.product.id", is(orderItemMock.getProduct().getId().intValue())));
     }
 }

@@ -4,6 +4,7 @@ package com.modsen.practice.dto;
 import com.modsen.practice.entity.OrderItem;
 import com.modsen.practice.enumeration.OrderStatus;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -16,24 +17,40 @@ import java.util.Set;
 @NoArgsConstructor
 public class OrderRequest {
 
+    @Min(value=1,groups = Marker.OnUpdate.class)
+    @Null(groups = Marker.OnCreate.class)
+    @NotNull(groups = Marker.OnUpdate.class)
     private Long id;
 
+    @Min(1)
+    @NotNull
     private Long userId;
 
+    @Min(0)
+    @NotNull
     private BigDecimal price;
 
-    private OrderStatus status;
+    @NotBlank
+    private String status;
 
+    @NotBlank
     private String city;
 
+    @NotBlank
     private String street;
 
+    @NotBlank
     private String houseNumber;
 
+    @Min(0)
+    @NotNull
     private int apartmentNumber;
 
+    @Past
+    @NotNull
     private Date creationDate;
 
-    private Set<OrderItem> orderItems;
+    @NotEmpty
+    private Set<OrderItemRequest> orderItems;
 
 }

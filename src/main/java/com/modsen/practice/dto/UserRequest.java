@@ -1,28 +1,53 @@
 package com.modsen.practice.dto;
 
 
+import com.modsen.practice.enumeration.Gender;
+import com.modsen.practice.enumeration.UserRole;
+import jakarta.persistence.Column;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
+import java.sql.Date;
 import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserRequest {
+
+    @Min(value = 1,groups = Marker.OnUpdate.class)
+    @NotNull(groups = Marker.OnUpdate.class)
+    @Null(groups = Marker.OnCreate.class)
     private Long id;
 
-    private String email;
+    @NotBlank
+    private String firstname;
 
-    private String login;
+    @NotBlank
+    private String lastname;
 
-    private String password;
+    @NotBlank
+    private String middleName;
 
-    private String name;
-
-    private String surname;
-
+    @NotBlank
     private String gender;
 
+    @NotBlank
+    private String login;
 
-    private LocalDate birthDate;
+    @NotBlank
+    private String passwordHash;
+
+    @NotBlank
+    private String role;
+
+    @NotBlank
+    private String phoneNumber;
+
+    @NotNull
+    @Past
+    private Date birthDate;
+
+    @NotBlank
+    private String email;
 }

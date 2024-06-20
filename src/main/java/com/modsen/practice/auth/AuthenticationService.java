@@ -78,14 +78,17 @@ public class AuthenticationService {
         }
         refreshToken = authHeader.substring(7);
         username = jwtService.extractUsername(refreshToken);
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (username != null) {
             var user =  userVODetailsService.loadUserByUsername(username);
             if (jwtService.isTokenValid(refreshToken, user)) {
                 var accessToken = jwtService.generateToken(user);
                 var authResponse = AuthenticationResponse.builder()
+                        .userData(username)
+                        .role(user.getAuthorities().toString())
                         .accessToken(accessToken)
                         .refreshToken(refreshToken)
                         .build();
+                response.setContentType("application/json");
                 new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
             }
         }

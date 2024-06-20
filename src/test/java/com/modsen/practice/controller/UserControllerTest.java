@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,17 +44,20 @@ class UserControllerTest {
     void testGetByIdUserById() throws Exception {
         UserResponse userMock = new UserResponse();
         userMock.setId(12L);
-        userMock.setName("TestName");
+        userMock.setFirstname("TestName");
         userMock.setEmail("check@mail.ru");
+        userMock.setGender("asd");
+        userMock.setLastname("adads");
+        userMock.setLogin("sad");
 
         when(userService.getById(12L)).thenReturn(userMock);
 
 
-        mockMvc.perform(get(CONTROLLER_PATH + "/{id}", 12))
+        mockMvc.perform(get(CONTROLLER_PATH + "/{id}", 12).with(csrf()))
                 .andExpect(status().is(200))
                 .andExpect(jsonPath("$.id", is(userMock.getId().intValue())))
                 .andExpect(jsonPath("$.email", is(userMock.getEmail())))
-                .andExpect(jsonPath("$.name", is(userMock.getName())));
+                .andExpect(jsonPath("$.firstname", is(userMock.getFirstname())));
     }
 
     @Test
@@ -62,23 +66,23 @@ class UserControllerTest {
         List<UserResponse> responseTos = new ArrayList<>();
         UserResponse userMock = new UserResponse();
         userMock.setId(12L);
-        userMock.setName("TestName");
+        userMock.setFirstname("TestName");
         userMock.setEmail("check@mail.ru");
         responseTos.add(userMock);
 
-        when(userService.getAll(2, 2, "", "")).thenReturn(responseTos);
+        when(userService.getAll(2, 2, "price", "desc")).thenReturn(responseTos);
 
 
         mockMvc.perform(get(CONTROLLER_PATH)
+                        .with(csrf())
                         .param("pageNumber", "2")
                         .param("pageSize", "2")
-                        .param("sortBy", "")
-                        .param("sortOrder", "")
-                        .with(csrf()))
+                        .param("sortBy", "price")
+                        .param("sortOrder", "desc"))
                 .andExpect(status().is(200))
                 .andExpect(jsonPath("$[0].id", is(userMock.getId().intValue())))
                 .andExpect(jsonPath("$[0].email", is(userMock.getEmail())))
-                .andExpect(jsonPath("$[0].name", is(userMock.getName())));
+                .andExpect(jsonPath("$[0].firstname", is(userMock.getFirstname())));
     }
 
     @Test
@@ -86,7 +90,7 @@ class UserControllerTest {
     void testDeleteById() throws Exception {
         UserResponse userMock = new UserResponse();
         userMock.setId(12L);
-        userMock.setName("TestName");
+        userMock.setFirstname("TestName");
         userMock.setEmail("check@mail.ru");
 
         when(userService.delete(12L)).thenReturn(userMock);
@@ -96,7 +100,7 @@ class UserControllerTest {
                 .andExpect(status().is(204))
                 .andExpect(jsonPath("$.id", is(userMock.getId().intValue())))
                 .andExpect(jsonPath("$.email", is(userMock.getEmail())))
-                .andExpect(jsonPath("$.name", is(userMock.getName())));
+                .andExpect(jsonPath("$.firstname", is(userMock.getFirstname())));
     }
 
     @Test
@@ -105,12 +109,20 @@ class UserControllerTest {
 
         UserRequest requestTo = new UserRequest();
         requestTo.setId(12L);
-        requestTo.setName("Updated Name");
-        requestTo.setEmail("updated@email.com");
-
+        requestTo.setFirstname("Updated Name");
+        requestTo.setFirstname("TestName");
+        requestTo.setEmail("check@mail.ru");
+        requestTo.setGender("asd");
+        requestTo.setLastname("adads");
+        requestTo.setLogin("sad");
+        requestTo.setRole("sada");
+        requestTo.setBirthDate(new Date(12L));
+        requestTo.setMiddleName("sada");
+        requestTo.setPasswordHash("asdas");
+        requestTo.setPhoneNumber("sadsad");
         UserResponse responseTo = new UserResponse();
         responseTo.setId(12L);
-        responseTo.setName("Updated Name");
+        responseTo.setFirstname("Updated Name");
         responseTo.setEmail("updated@email.com");
 
 
@@ -123,7 +135,7 @@ class UserControllerTest {
                 .andExpect(status().is(200))
                 .andExpect(jsonPath("$.id", is(responseTo.getId().intValue())))
                 .andExpect(jsonPath("$.email", is(responseTo.getEmail())))
-                .andExpect(jsonPath("$.name", is(responseTo.getName())));
+                .andExpect(jsonPath("$.firstname", is(responseTo.getFirstname())));
     }
 
     @Test
@@ -131,13 +143,21 @@ class UserControllerTest {
     void testSaveUser() throws Exception {
 
         UserRequest requestTo = new UserRequest();
-        requestTo.setId(12L);
-        requestTo.setName("Updated Name");
+        requestTo.setId(null);
+        requestTo.setFirstname("Updated Name");
         requestTo.setEmail("updated@email.com");
+        requestTo.setGender("asd");
+        requestTo.setLastname("adads");
+        requestTo.setLogin("sad");
+        requestTo.setRole("sada");
+        requestTo.setBirthDate(new Date(12L));
+        requestTo.setMiddleName("sada");
+        requestTo.setPasswordHash("asdas");
+        requestTo.setPhoneNumber("sadsad");
 
         UserResponse responseTo = new UserResponse();
         responseTo.setId(12L);
-        responseTo.setName("Updated Name");
+        responseTo.setFirstname("Updated Name");
         responseTo.setEmail("updated@email.com");
 
 
@@ -150,7 +170,7 @@ class UserControllerTest {
                 .andExpect(status().is(201))
                 .andExpect(jsonPath("$.id", is(responseTo.getId().intValue())))
                 .andExpect(jsonPath("$.email", is(responseTo.getEmail())))
-                .andExpect(jsonPath("$.name", is(responseTo.getName())));
+                .andExpect(jsonPath("$.firstname", is(responseTo.getFirstname())));
     }
 
 }

@@ -1,5 +1,6 @@
 package com.modsen.practice.controller;
 
+import com.modsen.practice.dto.CategoryResponse;
 import com.modsen.practice.dto.ProductRequest;
 import com.modsen.practice.dto.ProductResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,8 +43,12 @@ class ProductControllerTest {
 
     @BeforeAll
     static void init() {
-        ProductResponse productResponse1 = new ProductResponse(1L, 2L, "3", "3", 4.0, "5", 6, 7);
-        ProductResponse productResponse2 = new ProductResponse(7L, 6L, "5", "5", 4.0, "3", 2, 1);
+        CategoryResponse categoryResponse1 = new CategoryResponse();
+        categoryResponse1.setId(2L);
+        CategoryResponse categoryResponse2 = new CategoryResponse();
+        categoryResponse2.setId(6L);
+        ProductResponse productResponse1 = new ProductResponse(1L, categoryResponse1, "3sad", "3", BigDecimal.valueOf(12.0), "5", (short)6, (short)7);
+        ProductResponse productResponse2 = new ProductResponse(7L, categoryResponse2, "5sad", "5", BigDecimal.valueOf(12.0), "3", (short)2, (short)1);
 
         productResponseList.add(productResponse1);
         productResponseList.add(productResponse2);
@@ -61,10 +67,10 @@ class ProductControllerTest {
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andExpect(jsonPath("$", hasSize(productResponseList.size())))
                 .andExpect(jsonPath("$[0].id").value(1))
-                .andExpect(jsonPath("$[0].category").value(2))
+                .andExpect(jsonPath("$[0].category.id").value(2))
                 .andExpect(jsonPath("$[0].ingredients").value("3"))
-                .andExpect(jsonPath("$[0].name").value("3"))
-                .andExpect(jsonPath("$[0].price").value(4.0))
+                .andExpect(jsonPath("$[0].name").value("3sad"))
+                .andExpect(jsonPath("$[0].price").value(12.0))
                 .andExpect(jsonPath("$[0].description").value("5"))
                 .andExpect(jsonPath("$[0].weight").value(6))
                 .andExpect(jsonPath("$[0].caloric_value").value(7));
@@ -78,10 +84,10 @@ class ProductControllerTest {
         mvc.perform(get(CONTROLLER_PATH + "/{id}", 1).with(csrf()))
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.category").value(2))
+                .andExpect(jsonPath("$.category.id").value(2))
                 .andExpect(jsonPath("$.ingredients").value("3"))
-                .andExpect(jsonPath("$.name").value("3"))
-                .andExpect(jsonPath("$.price").value(4.0))
+                .andExpect(jsonPath("$.name").value("3sad"))
+                .andExpect(jsonPath("$.price").value(12.0))
                 .andExpect(jsonPath("$.description").value("5"))
                 .andExpect(jsonPath("$.weight").value(6))
                 .andExpect(jsonPath("$.caloric_value").value(7));
@@ -90,7 +96,7 @@ class ProductControllerTest {
     @Test
     @WithMockUser
     void testCreateProduct() throws Exception {
-        ProductRequest request = new ProductRequest(1L, 2L, "3", "3", 4.0, "5", 6, 7);
+        ProductRequest request = new ProductRequest(1L, 2L, "3sad", "3asdf", new BigDecimal(12), "5", (short)6, (short)7);
         when(productService.save(any())).thenReturn(productResponseList.get(0));
 
         mvc.perform(post(CONTROLLER_PATH).with(csrf())
@@ -98,10 +104,10 @@ class ProductControllerTest {
                         .content(new ObjectMapper().writeValueAsString(request)))
                 .andExpect(status().is(HttpStatus.CREATED.value()))
                 .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.category").value(2))
+                .andExpect(jsonPath("$.category.id").value(2))
                 .andExpect(jsonPath("$.ingredients").value("3"))
-                .andExpect(jsonPath("$.name").value("3"))
-                .andExpect(jsonPath("$.price").value(4.0))
+                .andExpect(jsonPath("$.name").value("3sad"))
+                .andExpect(jsonPath("$.price").value(12.0))
                 .andExpect(jsonPath("$.description").value("5"))
                 .andExpect(jsonPath("$.weight").value(6))
                 .andExpect(jsonPath("$.caloric_value").value(7));
@@ -110,17 +116,17 @@ class ProductControllerTest {
     @Test
     @WithMockUser
     void testUpdateProduct() throws Exception {
-        ProductRequest request = new ProductRequest(1L, 2L, "3", "3", 4.0, "5", 6, 7);
+        ProductRequest request = new ProductRequest(1L, 2L, "3sad", "3asdf", new BigDecimal(12), "5", (short)6, (short)7);
         when(productService.update(any())).thenReturn(productResponseList.get(0));
 
         mvc.perform(put(CONTROLLER_PATH).with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(request)))
                 .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.category").value(2))
+                .andExpect(jsonPath("$.category.id").value(2))
                 .andExpect(jsonPath("$.ingredients").value("3"))
-                .andExpect(jsonPath("$.name").value("3"))
-                .andExpect(jsonPath("$.price").value(4.0))
+                .andExpect(jsonPath("$.name").value("3sad"))
+                .andExpect(jsonPath("$.price").value(12.0))
                 .andExpect(jsonPath("$.description").value("5"))
                 .andExpect(jsonPath("$.weight").value(6))
                 .andExpect(jsonPath("$.caloric_value").value(7));
@@ -133,9 +139,9 @@ class ProductControllerTest {
 
         mvc.perform(delete(CONTROLLER_PATH + "/{id}", 1).with(csrf()))
                 .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.category").value(2))
+                .andExpect(jsonPath("$.category.id").value(2))
                 .andExpect(jsonPath("$.ingredients").value("3"))
-                .andExpect(jsonPath("$.price").value(4.0))
+                .andExpect(jsonPath("$.price").value(12.0))
                 .andExpect(jsonPath("$.description").value("5"))
                 .andExpect(jsonPath("$.weight").value(6))
                 .andExpect(jsonPath("$.caloric_value").value(7));

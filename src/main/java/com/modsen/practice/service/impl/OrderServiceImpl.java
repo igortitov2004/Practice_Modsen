@@ -20,6 +20,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<OrderResponse> getAllByUserId(Long userId, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
+        return null;
+    }
+
+    @Override
     public OrderResponse save(OrderRequest requestTo) {
         return null;
     }

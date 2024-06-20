@@ -40,8 +40,8 @@ class CategoryControllerTest {
 
     @BeforeAll
     static void init() {
-        CategoryResponse categoryResponse1 = new CategoryResponse(1L, "2");
-        CategoryResponse categoryResponse2 = new CategoryResponse(7L, "6");
+        CategoryResponse categoryResponse1 = new CategoryResponse(1L, "22");
+        CategoryResponse categoryResponse2 = new CategoryResponse(7L, "66");
 
         categoryResponseList.add(categoryResponse1);
         categoryResponseList.add(categoryResponse2);
@@ -60,7 +60,7 @@ class CategoryControllerTest {
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andExpect(jsonPath("$", hasSize(categoryResponseList.size())))
                 .andExpect(jsonPath("$[0].id").value(1))
-                .andExpect(jsonPath("$[0].name").value("2"));
+                .andExpect(jsonPath("$[0].name").value("22"));
     }
 
     @Test
@@ -71,13 +71,13 @@ class CategoryControllerTest {
         mvc.perform(get(CONTROLLER_PATH + "/{id}", 1).with(csrf()))
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.name").value("2"));
+                .andExpect(jsonPath("$.name").value("22"));
     }
 
     @Test
     @WithMockUser
     void testCreateCategory() throws Exception {
-        CategoryRequest request = new CategoryRequest(1L, "2");
+        CategoryRequest request = new CategoryRequest(1L, "22");
         when(categoryService.save(any())).thenReturn(categoryResponseList.get(0));
 
         mvc.perform(post(CONTROLLER_PATH).with(csrf())
@@ -85,13 +85,13 @@ class CategoryControllerTest {
                         .content(new ObjectMapper().writeValueAsString(request)))
                 .andExpect(status().is(HttpStatus.CREATED.value()))
                 .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.name").value("2"));
+                .andExpect(jsonPath("$.name").value("22"));
     }
 
     @Test
     @WithMockUser
     void testUpdateCategory() throws Exception {
-        CategoryRequest request = new CategoryRequest(1L, "2");
+        CategoryRequest request = new CategoryRequest(1L, "22");
         when(categoryService.update(any())).thenReturn(categoryResponseList.get(0));
 
         mvc.perform(put(CONTROLLER_PATH).with(csrf())
@@ -99,7 +99,7 @@ class CategoryControllerTest {
                         .content(new ObjectMapper().writeValueAsString(request)))
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.name").value("2"));
+                .andExpect(jsonPath("$.name").value("22"));
     }
 
     @Test
@@ -110,6 +110,6 @@ class CategoryControllerTest {
         mvc.perform(delete(CONTROLLER_PATH + "/{id}", 1).with(csrf()))
                 .andExpect(status().is(HttpStatus.NO_CONTENT.value()))
                 .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.name").value("2"));
+                .andExpect(jsonPath("$.name").value("22"));
     }
 }

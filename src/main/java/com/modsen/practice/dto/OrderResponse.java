@@ -1,13 +1,12 @@
 package com.modsen.practice.dto;
 
 
-import com.modsen.practice.entity.OrderItem;
-import com.modsen.practice.enumeration.OrderStatus;
+
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.math.BigDecimal;
 import java.sql.Date;
-import java.time.LocalDateTime;
 import java.util.Set;
 
 @Data
@@ -21,7 +20,7 @@ public class OrderResponse {
 
     private BigDecimal price;
 
-    private OrderStatus status;
+    private String status;
 
     private String city;
 
@@ -33,6 +32,6 @@ public class OrderResponse {
 
     private Date creationDate;
 
-    private Set<OrderItem> orderItems;
+    private Set<OrderItemResponse> orderItems;
 
 }

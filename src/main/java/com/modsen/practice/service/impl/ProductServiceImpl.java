@@ -19,6 +19,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<ProductResponse> getAllByCategoryId(Long categoryId, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
+        return null;
+    }
+
+    @Override
     public ProductResponse save(ProductRequest request) {
         return null;
     }

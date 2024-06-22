@@ -1,36 +1,68 @@
 package com.modsen.practice.service.impl;
 
+import com.modsen.practice.dto.CategoryResponse;
 import com.modsen.practice.dto.OrderItemRequest;
 import com.modsen.practice.dto.OrderItemResponse;
+import com.modsen.practice.entity.OrderItem;
+import com.modsen.practice.exception.orderItem.OrderItemIsNotExistsException;
+import com.modsen.practice.mapper.OrderItemRequestToOrderItemConverter;
+import com.modsen.practice.mapper.OrderItemToOrderItemResponseConverter;
+import com.modsen.practice.mapper.UserToUserResponseConverter;
+import com.modsen.practice.repository.CategoryRepository;
+import com.modsen.practice.repository.OrderItemRepository;
 import com.modsen.practice.service.OrderItemService;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.core.convert.ConversionService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class OrderItemServiceImpl implements OrderItemService {
+    private final OrderItemRepository orderItemRepository;
+    private final ConversionService conversionService;
+
+    @Transactional(readOnly = true)
     @Override
     public OrderItemResponse getById(Long id) {
-        return null;
+        var orderItem = orderItemRepository.findById(id)
+                .orElseThrow(()-> new OrderItemIsNotExistsException("Order item with this id is not exists"));
+        return conversionService.convert(orderItem,OrderItemResponse.class);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<OrderItemResponse> getAll(Integer pageNumber, Integer pageSize, String sortBy, String sortOrderItem) {
-        return null;
+        return orderItemRepository.findAll(PageRequest.of(pageNumber, pageSize, Sort.by(sortBy)))
+                .getContent()
+                .stream()
+                .map((o)-> conversionService.convert(o,OrderItemResponse.class))
+                .toList();
     }
 
+    @Transactional
     @Override
-    public OrderItemResponse save(OrderItemRequest requestTo) {
-        return null;
+    public OrderItemResponse save(OrderItemRequest request) {
+        var orderItem = orderItemRepository.save(Objects.requireNonNull(
+                conversionService.convert(request, OrderItem.class)));
+        return conversionService.convert(orderItem,OrderItemResponse.class);
     }
 
+    @Transactional
     @Override
-    public OrderItemResponse delete(Long id) {
-        return null;
-    }
-
-    @Override
-    public OrderItemResponse update(OrderItemRequest requestTo) {
-        return null;
+    public void delete(Long id) {
+        if (!orderItemRepository.existsOrderItemById(id)) {
+            throw new OrderItemIsNotExistsException("Order item with this id is not exists");
+        }
+        orderItemRepository.deleteById(id);
     }
 }

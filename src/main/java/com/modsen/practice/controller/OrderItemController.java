@@ -19,7 +19,6 @@ import java.util.List;
 @RequestMapping("/api/order_items")
 @Validated
 public class OrderItemController {
-
     private final OrderItemService orderItemService;
 
     @GetMapping("/{id}")
@@ -28,7 +27,7 @@ public class OrderItemController {
         return new ResponseEntity<>(orderItemResponse, HttpStatusCode.valueOf(200));
     }
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<List<OrderItemResponse>> getAll(
             @RequestParam(required = false, defaultValue = "0") @Min(0) Integer pageNumber,
             @RequestParam(required = false, defaultValue = "10") @Min(1) Integer pageSize,
@@ -46,17 +45,10 @@ public class OrderItemController {
 
     }
 
-    @PutMapping()
-    @Validated(Marker.OnUpdate.class)
-    public ResponseEntity<OrderItemResponse> update(@RequestBody @Valid OrderItemRequest orderItem) {
-        OrderItemResponse orderItemResponse = orderItemService.update(orderItem);
-        return new ResponseEntity<>(orderItemResponse, HttpStatusCode.valueOf(200));
-    }
-
     @DeleteMapping("/{id}")
-    public ResponseEntity<OrderItemResponse> delete(@PathVariable @Min(1) Long id) {
-        OrderItemResponse orderItemResponse = orderItemService.delete(id);
-        return new ResponseEntity<>(orderItemResponse, HttpStatusCode.valueOf(204));
+    public ResponseEntity<String> delete(@PathVariable @Min(1) Long id) {
+        orderItemService.delete(id);
+        return new ResponseEntity<>("Deleted successfully", HttpStatusCode.valueOf(204));
     }
 
 }

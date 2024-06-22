@@ -4,6 +4,7 @@ package com.modsen.practice.service;
 
 import com.modsen.practice.dto.OrderItemRequest;
 import com.modsen.practice.dto.OrderItemResponse;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -14,7 +15,5 @@ public interface OrderItemService {
 
     OrderItemResponse save(OrderItemRequest requestTo);
 
-    OrderItemResponse delete(Long id);
-
-    OrderItemResponse update(OrderItemRequest requestTo);
+    void delete(Long id);
 }

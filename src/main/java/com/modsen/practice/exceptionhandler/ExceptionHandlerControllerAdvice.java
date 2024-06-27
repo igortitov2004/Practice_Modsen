@@ -40,5 +40,4 @@ public class ExceptionHandlerControllerAdvice {
                 .collect(Collectors.toList());
         return new ValidationErrorResponse(violations);
     }
-
 }

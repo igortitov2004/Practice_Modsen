@@ -11,7 +11,7 @@ import java.util.List;
 public interface CategoryService {
     CategoryResponse getById(Long id);
 
-    Page<CategoryResponse> getAll(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
+    List<CategoryResponse> getAll(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
 
     CategoryResponse save(CategoryRequest request);
 

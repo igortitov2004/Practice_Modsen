@@ -1,60 +1,70 @@
 package com.modsen.practice.service.impl;
 
+import com.modsen.practice.dto.CategoryResponse;
 import com.modsen.practice.dto.UserRequest;
 import com.modsen.practice.dto.UserResponse;
+import com.modsen.practice.entity.User;
+import com.modsen.practice.exception.CategoryIsNotExistsException;
 import com.modsen.practice.exception.IncorrectDataException;
-import com.modsen.practice.exception.UserExistenceException;
+import com.modsen.practice.exception.UserIsNotExistsException;
 import com.modsen.practice.mapper.UserRequestToUserConverter;
 import com.modsen.practice.mapper.UserToUserResponseConverter;
 import com.modsen.practice.repository.UserRepository;
 import com.modsen.practice.service.UserService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Objects;
+
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    private final ConversionService conversionService;
 
     @Override
     public UserResponse getById(Long id) {
-        if (id != null && userRepository.findById(id).isPresent()) {
-            var user = userRepository.findById(id).orElseThrow(RuntimeException::new);
-            return new UserToUserResponseConverter().convert(user);
-        }
-        else throw new UserExistenceException();
+        var user = userRepository.findById(id)
+                .orElseThrow(()-> new UserIsNotExistsException("User with this id is not exists"));
+        return conversionService.convert(user, UserResponse.class);
     }
 
     @Override
-    public Page<UserResponse> getAll(Integer pageNumber, Integer pageSize, String sortBy, String sortUser) {
-        var users = userRepository.findAll(PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.ASC, sortUser)));
-        return users.map(new UserToUserResponseConverter()::convert);
+    public List<UserResponse> getAll(Integer pageNumber, Integer pageSize, String sortBy, String sortUser) {
+        return userRepository.findAll(PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.ASC, sortBy)))
+                .getContent()
+                .stream()
+                .map((o)-> conversionService.convert(o,UserResponse.class))
+                .toList();
     }
 
     @Override
     public UserResponse save(UserRequest request) {
         if (request.getLogin() != null && request.getPasswordHash() != null) {
-            var user = userRepository.save(new UserRequestToUserConverter().convert(request));
-            return new UserToUserResponseConverter().convert(user);
-        } else throw new IncorrectDataException();
+            var user = userRepository.save(Objects.requireNonNull(conversionService.convert(request, User.class)));
+            return conversionService.convert(user, UserResponse.class);
+        } else throw new IncorrectDataException("Invalid data received");
     }
 
     @Override
     public void delete(Long id) {
         if (id != null && userRepository.findById(id).isPresent()) userRepository.deleteById(id);
-        else throw new UserExistenceException();
+        else throw new UserIsNotExistsException("User with this id is not exists");
     }
 
     @Override
     public UserResponse update(UserRequest request) {
         if (userRepository.findById(request.getId()).isPresent())
             return save(request);
-        else throw new UserExistenceException();
+        else throw new UserIsNotExistsException("User with this id is not exists");
     }
 }

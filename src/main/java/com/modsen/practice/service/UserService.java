@@ -12,7 +12,7 @@ import java.util.List;
 public interface UserService {
     UserResponse getById(Long id);
 
-    Page<UserResponse> getAll(Integer pageNumber, Integer pageSize, String sortBy, String sortUser);
+    List<UserResponse> getAll(Integer pageNumber, Integer pageSize, String sortBy, String sortUser);
 
     UserResponse save(UserRequest request);
 

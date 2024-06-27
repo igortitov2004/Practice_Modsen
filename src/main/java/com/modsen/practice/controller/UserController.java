@@ -50,8 +50,8 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<UserResponse> delete(@PathVariable @Min(1) Long id) {
-        UserResponse userResponse = userService.delete(id);
-        return new ResponseEntity<>(userResponse, HttpStatusCode.valueOf(204));
+        userService.delete(id);
+        return new ResponseEntity<>(HttpStatusCode.valueOf(204));
     }
 
     @PutMapping()

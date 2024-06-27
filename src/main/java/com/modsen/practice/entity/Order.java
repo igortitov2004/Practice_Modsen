@@ -50,7 +50,7 @@ public class Order {
     @Column(name = "creation_date")
     private Date creationDate;
 
-    @OneToMany(mappedBy = "order",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "order",cascade = CascadeType.REMOVE)
     private Set<OrderItem> orderItems;
 
 }

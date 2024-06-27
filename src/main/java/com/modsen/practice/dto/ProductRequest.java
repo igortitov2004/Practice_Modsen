@@ -40,5 +40,5 @@ public class ProductRequest {
 
     @Min(0)
     @NotNull(groups = Marker.OnCreate.class)
-    private Short caloric_value;
+    private Short caloricValue;
 }

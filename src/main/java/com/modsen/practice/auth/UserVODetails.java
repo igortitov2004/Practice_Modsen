@@ -14,6 +14,10 @@ import java.util.Collections;
 @Builder
 public class UserVODetails implements UserDetails {
 
+    public User getUser() {
+        return user;
+    }
+
     private final User user;
 
     @Override

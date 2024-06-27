@@ -20,9 +20,8 @@ public class OrderItemRequest {
     @NotNull
     private Long productId;
 
-    @Min(value = 1,groups = Marker.OnUpdate.class)
+    @Min(value = 1)
     @NotNull(groups = Marker.OnUpdate.class)
-    @Null(groups = Marker.OnCreate.class)
     private Long orderId;
 
     @Min(1)

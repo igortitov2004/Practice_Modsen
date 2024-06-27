@@ -6,24 +6,22 @@ import com.modsen.practice.entity.Order;
 import com.modsen.practice.entity.OrderItem;
 import com.modsen.practice.entity.User;
 import com.modsen.practice.enumeration.OrderStatus;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.ConversionService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
 import java.util.Set;
 
+@Component
+@RequiredArgsConstructor
 public class OrderRequestToOrderConverter implements Converter<OrderRequest, Order> {
 
-    @Autowired
-    private ConversionService conversionService;
+    private OrderItemRequestToOrderItemConverter orderItemRequestConverter;
 
     @Override
     public Order convert(OrderRequest source) {
         Order order = new Order();
-        User user = new User();
-        user.setId(source.getId());
-        order.setUser(user);
         order.setStreet(source.getStreet());
         order.setCity(source.getCity());
         order.setStatus(OrderStatus.valueOf(source.getStatus()));
@@ -31,14 +29,6 @@ public class OrderRequestToOrderConverter implements Converter<OrderRequest, Ord
         order.setHouseNumber(source.getHouseNumber());
         order.setApartmentNumber(source.getApartmentNumber());
         order.setPrice(source.getPrice());
-
-        Set<OrderItem> orderItemSet = new HashSet<>();
-        for (OrderItemRequest orderItemRequest : source.getOrderItems()) {
-            OrderItem orderItem = conversionService.convert(orderItemRequest, OrderItem.class);
-            orderItem.setOrder(order);
-            orderItemSet.add(orderItem);
-        }
-        order.setOrderItems(orderItemSet);
         return order;
     }
 }

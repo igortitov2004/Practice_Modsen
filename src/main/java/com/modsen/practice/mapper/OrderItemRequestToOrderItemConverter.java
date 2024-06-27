@@ -4,8 +4,12 @@ import com.modsen.practice.dto.OrderItemRequest;
 import com.modsen.practice.entity.Order;
 import com.modsen.practice.entity.OrderItem;
 import com.modsen.practice.entity.Product;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.stereotype.Component;
 
+@Component
+@RequiredArgsConstructor
 public class OrderItemRequestToOrderItemConverter implements Converter<OrderItemRequest, OrderItem> {
     @Override
     public OrderItem convert(OrderItemRequest source) {

@@ -2,11 +2,16 @@ package com.modsen.practice.service.impl;
 
 import com.modsen.practice.dto.OrderItemRequest;
 import com.modsen.practice.dto.OrderItemResponse;
+import com.modsen.practice.entity.Order;
 import com.modsen.practice.entity.OrderItem;
+import com.modsen.practice.entity.Product;
 import com.modsen.practice.exception.orderItem.OrderItemIsNotExistsException;
 import com.modsen.practice.repository.OrderItemRepository;
 import com.modsen.practice.service.OrderItemService;
+import com.modsen.practice.service.ProductService;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -21,6 +26,8 @@ import java.util.Objects;
 public class OrderItemServiceImpl implements OrderItemService {
     private final OrderItemRepository orderItemRepository;
     private final ConversionService conversionService;
+    private final ProductService productService;
+    private final ModelMapper modelMapper;
 
     @Transactional(readOnly = true)
     @Override
@@ -42,10 +49,14 @@ public class OrderItemServiceImpl implements OrderItemService {
 
     @Transactional
     @Override
-    public OrderItemResponse save(OrderItemRequest request) {
-        var orderItem = orderItemRepository.save(Objects.requireNonNull(
-                conversionService.convert(request, OrderItem.class)));
-        return conversionService.convert(orderItem,OrderItemResponse.class);
+    public OrderItemResponse save(OrderItemRequest request, Order order) {
+        var orderItem = OrderItem.builder()
+                .order(order)
+                .count(request.getCount())
+                .product(modelMapper.map(productService.getById(request.getProductId()), Product.class))
+                .build();
+        var savedOrderItem = orderItemRepository.save(orderItem);
+        return mapToResponse(savedOrderItem);
     }
 
     @Transactional
@@ -56,4 +67,11 @@ public class OrderItemServiceImpl implements OrderItemService {
         }
         orderItemRepository.deleteById(id);
     }
+
+    private OrderItemResponse mapToResponse(OrderItem orderItem){
+        return modelMapper.map(orderItem,OrderItemResponse.class);
+    }
+
+
+
 }

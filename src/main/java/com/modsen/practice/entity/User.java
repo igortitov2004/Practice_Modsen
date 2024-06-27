@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Date;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -51,6 +52,10 @@ public class User {
 
     @Column(name = "email")
     private String email;
+
+
+    @OneToMany(mappedBy = "user")
+    private Set<Order> orders;
 
 
 }

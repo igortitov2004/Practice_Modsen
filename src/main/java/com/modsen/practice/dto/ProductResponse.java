@@ -17,5 +17,5 @@ public class ProductResponse {
     private BigDecimal price;
     private String description;
     private Short weight;
-    private Short caloric_value;
+    private Short caloricValue;
 }

@@ -14,7 +14,7 @@ public interface UserService {
 
     List<UserResponse> getAll(Integer pageNumber, Integer pageSize, String sortBy, String sortUser);
 
-    UserResponse save(UserRequest request);
+    UserResponse save(User user);
 
     void delete(Long id);
 

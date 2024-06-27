@@ -13,10 +13,11 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserVODetailsService implements UserDetailsService {
+    private static final String PATTERN= "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$";
     private final UserRepository userRepository;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        if (username.matches("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$")) {
+        if (username.matches(PATTERN)) {
             User user = userRepository.findUserByEmail(username).orElseThrow(() -> new UsernameNotFoundException("The user was not found"));
             return new UserVODetails(user);
         }

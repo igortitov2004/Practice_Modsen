@@ -1,10 +1,7 @@
 package com.modsen.practice.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
@@ -13,6 +10,7 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "order_items")
+@Builder
 public class OrderItem {
 
     @Id

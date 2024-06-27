@@ -16,9 +16,9 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class ExceptionHandlerControllerAdvice {
 
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<String> handleRuntimeException(RuntimeException e){
-        return new ResponseEntity<>("A runtime exception occurred: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleRuntimeException(Exception e){
+        return new ResponseEntity<>("A exception occurred: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ResponseBody
@@ -40,5 +40,4 @@ public class ExceptionHandlerControllerAdvice {
                 .collect(Collectors.toList());
         return new ValidationErrorResponse(violations);
     }
-
 }

@@ -19,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -31,6 +32,7 @@ public class UserServiceImpl implements UserService {
 
     private final ConversionService conversionService;
 
+    @Transactional(readOnly = true)
     @Override
     public UserResponse getById(Long id) {
         var user = userRepository.findById(id)
@@ -38,6 +40,7 @@ public class UserServiceImpl implements UserService {
         return conversionService.convert(user, UserResponse.class);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<UserResponse> getAll(Integer pageNumber, Integer pageSize, String sortBy, String sortUser) {
         return userRepository.findAll(PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.ASC, sortBy)))
@@ -47,6 +50,8 @@ public class UserServiceImpl implements UserService {
                 .toList();
     }
 
+
+    @Transactional
     @Override
     public UserResponse save(UserRequest request) {
         if (request.getLogin() != null && request.getPasswordHash() != null) {
@@ -55,12 +60,15 @@ public class UserServiceImpl implements UserService {
         } else throw new IncorrectDataException("Invalid data received");
     }
 
+    @Transactional
     @Override
     public void delete(Long id) {
         if (id != null && userRepository.findById(id).isPresent()) userRepository.deleteById(id);
         else throw new UserIsNotExistsException("User with this id is not exists");
     }
 
+
+    @Transactional
     @Override
     public UserResponse update(UserRequest request) {
         if (userRepository.findById(request.getId()).isPresent())

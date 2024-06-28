@@ -14,22 +14,18 @@ import com.modsen.practice.repository.UserRepository;
 import com.modsen.practice.service.OrderItemService;
 import com.modsen.practice.service.OrderService;
 
-import com.modsen.practice.service.UserService;
-import lombok.AllArgsConstructor;
-
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 @Service
@@ -38,9 +34,7 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private final ConversionService conversionService;
-    private final UserRepository userRepository;
     private final OrderItemService orderItemService;
-
     private final ModelMapper modelMapper;
 
     @Override

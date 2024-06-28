@@ -45,6 +45,8 @@ public class CategoryServiceImpl implements CategoryService {
                 .toList();
     }
 
+
+    @Transactional
     @Override
     public CategoryResponse save(CategoryRequest request) {
         if (request.getName() != null) {
@@ -53,12 +55,16 @@ public class CategoryServiceImpl implements CategoryService {
         } else throw new IncorrectDataException("Invalid data received");
     }
 
+
+    @Transactional
     @Override
     public void delete(Long id) {
         if (id != null && categoryRepository.findById(id).isPresent()) categoryRepository.deleteById(id);
         else throw new CategoryIsNotExistsException("Category with this id is not exists");
     }
 
+
+    @Transactional
     @Override
     public CategoryResponse update(CategoryRequest request) {
         if (categoryRepository.findById(request.getId()).isPresent())

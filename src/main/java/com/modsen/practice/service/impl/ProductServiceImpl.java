@@ -1,17 +1,17 @@
 package com.modsen.practice.service.impl;
 
-import com.modsen.practice.dto.OrderResponse;
 import com.modsen.practice.dto.ProductRequest;
 import com.modsen.practice.dto.ProductResponse;
-import com.modsen.practice.mapper.ProductRequestToProductConverter;
-import com.modsen.practice.mapper.ProductToProductResponseConverter;
+import com.modsen.practice.entity.Product;
+import com.modsen.practice.exception.product.ProductIsNotExistsException;
 import com.modsen.practice.repository.ProductRepository;
 import com.modsen.practice.service.ProductService;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -19,39 +19,59 @@ import java.util.Objects;
 @Service
 @AllArgsConstructor
 public class ProductServiceImpl implements ProductService {
-
+    private final ConversionService conversionService;
     private final ProductRepository productRepository;
 
+    @Transactional(readOnly = true)
     @Override
     public ProductResponse getById(Long id) {
-        var product = productRepository.findById(id).orElseThrow(RuntimeException::new);
-        return new ProductToProductResponseConverter().convert(product);
+        var product = productRepository.findById(id)
+                .orElseThrow(() -> new ProductIsNotExistsException("Product with this id is not exists"));
+        return conversionService.convert(product, ProductResponse.class);
     }
 
+    @Transactional(readOnly = true)
     @Override
-    public Page<ProductResponse> getAll(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
-        return null;
+    public List<ProductResponse> getAll(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
+        return productRepository.findAll(PageRequest.of(pageNumber, pageSize, Sort.by(sortBy))).getContent()
+                .stream()
+                .map(product -> conversionService.convert(product, ProductResponse.class))
+                .toList();
     }
 
+    @Transactional
     @Override
-    public Page<ProductResponse> getAllByCategoryId(Long categoryId, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
-        productRepository.findAll(PageRequest.of(pageNumber, pageSize, Sort.by(sortBy)));
-        return null;
+    public List<ProductResponse> getAllByCategoryId(Long categoryId, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
+        return productRepository.findByCategory_id(categoryId, PageRequest.of(pageNumber, pageSize, Sort.by(sortBy)))
+                .stream()
+                .map(product -> conversionService.convert(product, ProductResponse.class))
+                .toList();
     }
 
+    @Transactional
     @Override
     public ProductResponse save(ProductRequest request) {
-        productRepository.save(Objects.requireNonNull(new ProductRequestToProductConverter().convert(request)));
-        return null;
+        var product = productRepository.save(Objects.requireNonNull(
+                conversionService.convert(request, Product.class)));
+        return conversionService.convert(product, ProductResponse.class);
     }
 
+    @Transactional
     @Override
     public void delete(Long id) {
+        if (!productRepository.existsOrderItemById(id)) {
+            throw new ProductIsNotExistsException("Product with this id is not exists");
+        }
         productRepository.deleteById(id);
     }
 
+    @Transactional
     @Override
     public ProductResponse update(ProductRequest request) {
-        return null;
+        if (productRepository.findById(request.getId()).isPresent()) {
+            return save(request);
+        } else {
+            throw new ProductIsNotExistsException("Product with this id is not exists");
+        }
     }
 }

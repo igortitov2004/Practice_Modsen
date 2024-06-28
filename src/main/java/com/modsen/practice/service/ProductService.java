@@ -11,9 +11,9 @@ import java.util.List;
 public interface ProductService {
     ProductResponse getById(Long id);
 
-    Page<ProductResponse> getAll(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
+    List<ProductResponse> getAll(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
 
-    Page<ProductResponse> getAllByCategoryId(Long categoryId, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
+    List<ProductResponse> getAllByCategoryId(Long categoryId, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
 
     ProductResponse save(ProductRequest request);
 

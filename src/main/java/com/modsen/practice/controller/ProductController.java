@@ -9,6 +9,7 @@ import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/products")
+@PreAuthorize("hasAnyRole('ADMIN','CUSTOMER')")
 public class ProductController {
 
     private final ProductService productService;
@@ -43,20 +45,20 @@ public class ProductController {
         ProductResponse response = productService.getById(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<ProductResponse> delete(@PathVariable @Min(1) Long id) {
-        ProductResponse response = productService.delete(id);
-        return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
+    public ResponseEntity<String> delete(@PathVariable @Min(1) Long id) {
+        productService.delete(id);
+        return new ResponseEntity<>("deleted successfully", HttpStatus.OK);
     }
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
     @Validated(Marker.OnCreate.class)
     public ResponseEntity<ProductResponse> save(@RequestBody @Valid ProductRequest product) {
         ProductResponse response = productService.save(product);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping
     @Validated(Marker.OnUpdate.class)
     public ResponseEntity<ProductResponse> update(@RequestBody @Valid ProductRequest product) {

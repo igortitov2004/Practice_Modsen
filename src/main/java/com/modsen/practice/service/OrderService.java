@@ -17,7 +17,5 @@ public interface OrderService {
 
     OrderResponse save(OrderRequest requestTo);
 
-    OrderResponse delete(Long id);
-
-    OrderResponse update(OrderRequest requestTo);
+    void delete(Long id);
 }

@@ -2,8 +2,12 @@ package com.modsen.practice.mapper;
 
 import com.modsen.practice.dto.UserResponse;
 import com.modsen.practice.entity.User;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.stereotype.Component;
 
+@Component
+@RequiredArgsConstructor
 public class UserToUserResponseConverter implements Converter<User, UserResponse> {
     @Override
     public UserResponse convert(User source) {

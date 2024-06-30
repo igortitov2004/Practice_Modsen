@@ -4,6 +4,8 @@ package com.modsen.practice.service;
 
 import com.modsen.practice.dto.UserRequest;
 import com.modsen.practice.dto.UserResponse;
+import com.modsen.practice.entity.User;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -12,9 +14,9 @@ public interface UserService {
 
     List<UserResponse> getAll(Integer pageNumber, Integer pageSize, String sortBy, String sortUser);
 
-    UserResponse save(UserRequest requestTo);
+    UserResponse save(User user);
 
-    UserResponse delete(Long id);
+    void delete(Long id);
 
-    UserResponse update(UserRequest requestTo);
+    UserResponse update(UserRequest request);
 }

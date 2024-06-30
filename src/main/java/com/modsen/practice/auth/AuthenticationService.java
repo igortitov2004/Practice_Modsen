@@ -6,6 +6,7 @@ import com.modsen.practice.entity.User;
 import com.modsen.practice.enumeration.Gender;
 import com.modsen.practice.enumeration.UserRole;
 import com.modsen.practice.repository.UserRepository;
+import com.modsen.practice.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,7 @@ import java.sql.Date;
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
-    private final UserRepository repository;
+    private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
@@ -42,7 +43,7 @@ public class AuthenticationService {
                 .passwordHash(passwordEncoder.encode(request.getPasswordHash()))
                 .role(UserRole.CUSTOMER)
                 .build();
-        repository.save(user);
+        userService.save(user);
         var accessToken = jwtService.generateToken(new UserVODetails(user));
         var refreshToken = jwtService.generateRefreshToken(new UserVODetails(user));
         return AuthenticationResponse.builder()

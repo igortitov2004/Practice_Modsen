@@ -10,4 +10,6 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findByCategory_id(Long categoryId, Pageable pageable);
+
+    boolean existsOrderItemById(Long id);
 }

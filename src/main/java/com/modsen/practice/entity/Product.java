@@ -1,10 +1,7 @@
 package com.modsen.practice.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.Set;
@@ -16,6 +13,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "products")
+@Builder
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,6 +42,6 @@ public class Product {
     @Column(name = "caloric_value")
     private Short caloricValue;
 
-    @OneToMany(mappedBy = "product",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "product")
     private Set<OrderItem> orderItems;
 }

@@ -22,10 +22,6 @@ public class OrderRequest {
     @NotNull(groups = Marker.OnUpdate.class)
     private Long id;
 
-    @Min(1)
-    @NotNull
-    private Long userId;
-
     @Min(0)
     @NotNull
     private BigDecimal price;

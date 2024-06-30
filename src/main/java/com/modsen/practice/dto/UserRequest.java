@@ -14,9 +14,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserRequest {
-
-    @Min(value = 1,groups = Marker.OnUpdate.class)
-    @NotNull(groups = Marker.OnUpdate.class)
     @Null(groups = Marker.OnCreate.class)
     private Long id;
 

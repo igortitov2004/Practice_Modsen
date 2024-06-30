@@ -9,6 +9,7 @@ import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/categories")
+@PreAuthorize("hasAnyRole('ADMIN','CUSTOMER')")
 public class CategoryController {
 
     private final CategoryService categoryService;
@@ -37,18 +39,19 @@ public class CategoryController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<CategoryResponse> delete(@PathVariable @Min(1) Long id) {
-        CategoryResponse response = categoryService.delete(id);
-        return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
+        categoryService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<CategoryResponse> save(@RequestBody @Valid CategoryRequest category) {
         CategoryResponse response = categoryService.save(category);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping
     @Validated(Marker.OnUpdate.class)
     public ResponseEntity<CategoryResponse> update(@RequestBody @Valid CategoryRequest category) {

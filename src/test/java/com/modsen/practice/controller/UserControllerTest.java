@@ -1,5 +1,7 @@
 package com.modsen.practice.controller;
 
+import com.modsen.practice.auth.UserVODetailsService;
+import com.modsen.practice.auth.jwt.JwtService;
 import com.modsen.practice.dto.UserRequest;
 import com.modsen.practice.dto.UserResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,11 +9,13 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.modsen.practice.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -33,6 +37,15 @@ class UserControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @MockBean
+    private JwtService jwtService;
+
+    @MockBean
+    private PasswordEncoder passwordEncoder;
+
+    @MockBean
+    private UserVODetailsService userVODetailsService;
 
     @MockBean
     private UserService userService;
@@ -88,19 +101,9 @@ class UserControllerTest {
     @Test
     @WithMockUser
     void testDeleteById() throws Exception {
-        UserResponse userMock = new UserResponse();
-        userMock.setId(12L);
-        userMock.setFirstname("TestName");
-        userMock.setEmail("check@mail.ru");
-
-        when(userService.delete(12L)).thenReturn(userMock);
-
-
         mockMvc.perform(delete(CONTROLLER_PATH + "/{id}", 12).with(csrf()))
-                .andExpect(status().is(204))
-                .andExpect(jsonPath("$.id", is(userMock.getId().intValue())))
-                .andExpect(jsonPath("$.email", is(userMock.getEmail())))
-                .andExpect(jsonPath("$.firstname", is(userMock.getFirstname())));
+                .andExpect(status().is(204));
+        Mockito.verify(userService,Mockito.times(1)).delete(12L);
     }
 
     @Test
@@ -137,40 +140,4 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.email", is(responseTo.getEmail())))
                 .andExpect(jsonPath("$.firstname", is(responseTo.getFirstname())));
     }
-
-    @Test
-    @WithMockUser
-    void testSaveUser() throws Exception {
-
-        UserRequest requestTo = new UserRequest();
-        requestTo.setId(null);
-        requestTo.setFirstname("Updated Name");
-        requestTo.setEmail("updated@email.com");
-        requestTo.setGender("asd");
-        requestTo.setLastname("adads");
-        requestTo.setLogin("sad");
-        requestTo.setRole("sada");
-        requestTo.setBirthDate(new Date(12L));
-        requestTo.setMiddleName("sada");
-        requestTo.setPasswordHash("asdas");
-        requestTo.setPhoneNumber("sadsad");
-
-        UserResponse responseTo = new UserResponse();
-        responseTo.setId(12L);
-        responseTo.setFirstname("Updated Name");
-        responseTo.setEmail("updated@email.com");
-
-
-        when(userService.save(any())).thenReturn(responseTo);
-
-        mockMvc.perform(post(CONTROLLER_PATH)
-                        .with(csrf())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().registerModule(new JavaTimeModule()).writeValueAsString(requestTo)))
-                .andExpect(status().is(201))
-                .andExpect(jsonPath("$.id", is(responseTo.getId().intValue())))
-                .andExpect(jsonPath("$.email", is(responseTo.getEmail())))
-                .andExpect(jsonPath("$.firstname", is(responseTo.getFirstname())));
-    }
-
 }

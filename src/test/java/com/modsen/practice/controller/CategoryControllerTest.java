@@ -1,16 +1,20 @@
 package com.modsen.practice.controller;
 
+import com.modsen.practice.auth.UserVODetailsService;
+import com.modsen.practice.auth.jwt.JwtService;
 import com.modsen.practice.dto.CategoryRequest;
 import com.modsen.practice.dto.CategoryResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.modsen.practice.service.CategoryService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -32,6 +36,15 @@ class CategoryControllerTest {
     private MockMvc mvc;
 
     @MockBean
+    private JwtService jwtService;
+
+    @MockBean
+    private PasswordEncoder passwordEncoder;
+
+    @MockBean
+    private UserVODetailsService userVODetailsService;
+
+    @MockBean
     private CategoryService categoryService;
 
     private static final String CONTROLLER_PATH = "/api/categories";
@@ -48,7 +61,7 @@ class CategoryControllerTest {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(roles = "ADMIN")
     void testGetCategories() throws Exception {
         when(categoryService.getAll(1, 2, "id", "desc")).thenReturn(categoryResponseList);
 
@@ -105,11 +118,9 @@ class CategoryControllerTest {
     @Test
     @WithMockUser
     void testDeleteCategory() throws Exception {
-        when(categoryService.delete(1L)).thenReturn(categoryResponseList.get(0));
-
         mvc.perform(delete(CONTROLLER_PATH + "/{id}", 1).with(csrf()))
-                .andExpect(status().is(HttpStatus.NO_CONTENT.value()))
-                .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.name").value("22"));
+                .andExpect(status().is(HttpStatus.NO_CONTENT.value()));
+
+        Mockito.verify(categoryService, Mockito.times(1)).delete(1L);
     }
 }

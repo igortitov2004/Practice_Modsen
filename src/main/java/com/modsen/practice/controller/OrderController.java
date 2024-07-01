@@ -21,7 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/orders")
 @Validated
-@PreAuthorize("hasAnyRole('ADMIN','CUSTOMER')")
+@PreAuthorize("hasAnyAuthority('ADMIN','CUSTOMER')")
 public class OrderController {
 
     private final OrderService orderService;

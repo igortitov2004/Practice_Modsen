@@ -19,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/categories")
-@PreAuthorize("hasAnyRole('ADMIN','CUSTOMER')")
+@PreAuthorize("hasAnyAuthority('ADMIN','CUSTOMER')")
 public class CategoryController {
 
     private final CategoryService categoryService;
@@ -39,19 +39,19 @@ public class CategoryController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<CategoryResponse> delete(@PathVariable @Min(1) Long id) {
         categoryService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
     public ResponseEntity<CategoryResponse> save(@RequestBody @Valid CategoryRequest category) {
         CategoryResponse response = categoryService.save(category);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping
     @Validated(Marker.OnUpdate.class)
     public ResponseEntity<CategoryResponse> update(@RequestBody @Valid CategoryRequest category) {

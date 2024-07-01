@@ -80,11 +80,11 @@ class OrderRepositoryTest {
 
     void setUpUsers() {
         User user1 = new User(null,"FirstUser"," "," ",Gender.MALE,
-                " "," ",UserRole.CUSTOMER," ",new Date(12),"");
+                " "," ",UserRole.CUSTOMER," ",new Date(12),"",null);
         userRepository.save(user1);
 
         User user2 = new User(null,"SecondUser"," "," ",Gender.MALE,
-                " "," ",UserRole.CUSTOMER," ",new Date(12),"");
+                " "," ",UserRole.CUSTOMER," ",new Date(12),"",null);
         userRepository.save(user2);
 
         allUsers = userRepository.findAll();

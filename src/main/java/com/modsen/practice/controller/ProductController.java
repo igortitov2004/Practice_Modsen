@@ -19,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/products")
-@PreAuthorize("hasAnyRole('ADMIN','CUSTOMER')")
+@PreAuthorize("hasAnyAuthority('ADMIN','CUSTOMER')")
 public class ProductController {
 
     private final ProductService productService;
@@ -45,12 +45,14 @@ public class ProductController {
         ProductResponse response = productService.getById(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
     @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable @Min(1) Long id) {
         productService.delete(id);
         return new ResponseEntity<>("deleted successfully", HttpStatus.OK);
     }
+
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
     @Validated(Marker.OnCreate.class)
@@ -58,6 +60,7 @@ public class ProductController {
         ProductResponse response = productService.save(product);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
+
     @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping
     @Validated(Marker.OnUpdate.class)

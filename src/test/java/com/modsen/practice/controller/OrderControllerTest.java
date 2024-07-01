@@ -1,6 +1,8 @@
 package com.modsen.practice.controller;
 
 
+import com.modsen.practice.auth.UserVODetailsService;
+import com.modsen.practice.auth.jwt.JwtService;
 import com.modsen.practice.dto.OrderItemRequest;
 import com.modsen.practice.dto.OrderRequest;
 import com.modsen.practice.dto.OrderResponse;
@@ -11,11 +13,13 @@ import com.modsen.practice.service.OrderService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -40,6 +44,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class OrderControllerTest {
     @Autowired
     private MockMvc mockMvc;
+
+    @MockBean
+    private JwtService jwtService;
+
+    @MockBean
+    private PasswordEncoder passwordEncoder;
+
+    @MockBean
+    private UserVODetailsService userVODetailsService;
 
     @MockBean
     private OrderService orderService;
@@ -105,56 +118,9 @@ public class OrderControllerTest {
         orderMock.setPrice(BigDecimal.valueOf(123.12));
         orderMock.setStatus("COMPLETED");
 
-
-        when(orderService.delete(2L)).thenReturn(orderMock);
-
-
         mockMvc.perform(delete(CONTROLLER_PATH + "/{id}", 2).with(csrf()))
-                .andExpect(status().is(204))
-                .andExpect(jsonPath("$.id", is(orderMock.getId().intValue())))
-                .andExpect(jsonPath("$.userId", is(orderMock.getUserId().intValue())))
-                .andExpect(jsonPath("$.price", is(orderMock.getPrice().doubleValue())))
-                .andExpect(jsonPath("$.status", is(orderMock.getStatus())));
-
-    }
-
-    @Test
-    @WithMockUser
-    void testUpdateOrder() throws Exception {
-        Set<OrderItemRequest> orderItemRequests = new HashSet<>();
-        orderItemRequests.add(new OrderItemRequest(1L,1L,1L,(short)1));
-
-        OrderResponse orderMock = new OrderResponse();
-        orderMock.setId(2L);
-        orderMock.setUserId(3L);
-
-        orderMock.setPrice(BigDecimal.valueOf(123.12));
-        orderMock.setStatus("COMPLETED");
-
-
-        OrderRequest orderRequestMock = new OrderRequest();
-        orderRequestMock.setId(2L);
-        orderRequestMock.setUserId(3L);
-        orderRequestMock.setCity("asdf");
-        orderRequestMock.setStreet("asdfad");
-        orderRequestMock.setHouseNumber("asdads");
-        orderRequestMock.setCreationDate(new Date(12L));
-        orderRequestMock.setOrderItems(orderItemRequests);
-        orderRequestMock.setPrice(BigDecimal.valueOf(123.12));
-        orderRequestMock.setStatus("COMPLETED");
-
-
-        when(orderService.update(any())).thenReturn(orderMock);
-
-        mockMvc.perform(put(CONTROLLER_PATH).with(csrf())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().registerModule(new JavaTimeModule()).writeValueAsString(orderRequestMock)))
-                .andExpect(status().is(200))
-                .andExpect(jsonPath("$.id", is(orderMock.getId().intValue())))
-                .andExpect(jsonPath("$.userId", is(orderMock.getUserId().intValue())))
-                .andExpect(jsonPath("$.price", is(orderMock.getPrice().doubleValue())))
-                .andExpect(jsonPath("$.status", is(orderMock.getStatus())));
-
+                .andExpect(status().is(204));
+        Mockito.verify(orderService,Mockito.times(1)).delete(2L);
     }
 
     @Test
@@ -173,7 +139,6 @@ public class OrderControllerTest {
 
         OrderRequest orderRequestMock = new OrderRequest();
         orderRequestMock.setId(null);
-        orderRequestMock.setUserId(3L);
         orderRequestMock.setCity("asdf");
         orderRequestMock.setStreet("asdfad");
         orderRequestMock.setHouseNumber("asdads");

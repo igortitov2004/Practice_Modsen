@@ -2,10 +2,7 @@ package com.modsen.practice.entity;
 
 import com.modsen.practice.enumeration.OrderStatus;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -18,6 +15,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "orders")
+@Builder
 public class Order {
 
     @Id

@@ -1,5 +1,7 @@
 package com.modsen.practice.controller;
 
+import com.modsen.practice.auth.UserVODetailsService;
+import com.modsen.practice.auth.jwt.JwtService;
 import com.modsen.practice.dto.CategoryResponse;
 import com.modsen.practice.dto.ProductRequest;
 import com.modsen.practice.dto.ProductResponse;
@@ -7,11 +9,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.modsen.practice.service.ProductService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -35,6 +39,16 @@ class ProductControllerTest {
     private MockMvc mvc;
 
     @MockBean
+    private JwtService jwtService;
+
+    @MockBean
+    private PasswordEncoder passwordEncoder;
+
+    @MockBean
+    private UserVODetailsService userVODetailsService;
+
+
+    @MockBean
     private ProductService productService;
 
     private static final String CONTROLLER_PATH = "/api/products";
@@ -47,8 +61,8 @@ class ProductControllerTest {
         categoryResponse1.setId(2L);
         CategoryResponse categoryResponse2 = new CategoryResponse();
         categoryResponse2.setId(6L);
-        ProductResponse productResponse1 = new ProductResponse(1L, categoryResponse1, "3sad", "3", BigDecimal.valueOf(12.0), "5", (short)6, (short)7);
-        ProductResponse productResponse2 = new ProductResponse(7L, categoryResponse2, "5sad", "5", BigDecimal.valueOf(12.0), "3", (short)2, (short)1);
+        ProductResponse productResponse1 = new ProductResponse(1L, categoryResponse1, "3sad", "3", BigDecimal.valueOf(12.0), "5", (short) 6, (short) 7);
+        ProductResponse productResponse2 = new ProductResponse(7L, categoryResponse2, "5sad", "5", BigDecimal.valueOf(12.0), "3", (short) 2, (short) 1);
 
         productResponseList.add(productResponse1);
         productResponseList.add(productResponse2);
@@ -73,7 +87,7 @@ class ProductControllerTest {
                 .andExpect(jsonPath("$[0].price").value(12.0))
                 .andExpect(jsonPath("$[0].description").value("5"))
                 .andExpect(jsonPath("$[0].weight").value(6))
-                .andExpect(jsonPath("$[0].caloric_value").value(7));
+                .andExpect(jsonPath("$[0].caloricValue").value(7));
     }
 
     @Test
@@ -90,13 +104,13 @@ class ProductControllerTest {
                 .andExpect(jsonPath("$.price").value(12.0))
                 .andExpect(jsonPath("$.description").value("5"))
                 .andExpect(jsonPath("$.weight").value(6))
-                .andExpect(jsonPath("$.caloric_value").value(7));
+                .andExpect(jsonPath("$.caloricValue").value(7));
     }
 
     @Test
     @WithMockUser
     void testCreateProduct() throws Exception {
-        ProductRequest request = new ProductRequest(1L, 2L, "3sad", "3asdf", new BigDecimal(12), "5", (short)6, (short)7);
+        ProductRequest request = new ProductRequest(1L, 2L, "3sad", "3asdf", new BigDecimal(12), "5", (short) 6, (short) 7);
         when(productService.save(any())).thenReturn(productResponseList.get(0));
 
         mvc.perform(post(CONTROLLER_PATH).with(csrf())
@@ -110,13 +124,13 @@ class ProductControllerTest {
                 .andExpect(jsonPath("$.price").value(12.0))
                 .andExpect(jsonPath("$.description").value("5"))
                 .andExpect(jsonPath("$.weight").value(6))
-                .andExpect(jsonPath("$.caloric_value").value(7));
+                .andExpect(jsonPath("$.caloricValue").value(7));
     }
 
     @Test
     @WithMockUser
     void testUpdateProduct() throws Exception {
-        ProductRequest request = new ProductRequest(1L, 2L, "3sad", "3asdf", new BigDecimal(12), "5", (short)6, (short)7);
+        ProductRequest request = new ProductRequest(1L, 2L, "3sad", "3asdf", new BigDecimal(12), "5", (short) 6, (short) 7);
         when(productService.update(any())).thenReturn(productResponseList.get(0));
 
         mvc.perform(put(CONTROLLER_PATH).with(csrf())
@@ -129,22 +143,17 @@ class ProductControllerTest {
                 .andExpect(jsonPath("$.price").value(12.0))
                 .andExpect(jsonPath("$.description").value("5"))
                 .andExpect(jsonPath("$.weight").value(6))
-                .andExpect(jsonPath("$.caloric_value").value(7));
+                .andExpect(jsonPath("$.caloricValue").value(7));
     }
 
     @Test
     @WithMockUser
     void testDeleteProduct() throws Exception {
-        when(productService.delete(1L)).thenReturn(productResponseList.get(0));
+
 
         mvc.perform(delete(CONTROLLER_PATH + "/{id}", 1).with(csrf()))
-                .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.category.id").value(2))
-                .andExpect(jsonPath("$.ingredients").value("3"))
-                .andExpect(jsonPath("$.price").value(12.0))
-                .andExpect(jsonPath("$.description").value("5"))
-                .andExpect(jsonPath("$.weight").value(6))
-                .andExpect(jsonPath("$.caloric_value").value(7));
+                .andExpect(status().is(HttpStatus.OK.value()));
+        Mockito.verify(productService,Mockito.times(1)).delete(1L);
     }
 }
 

@@ -9,6 +9,7 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class OrderItemRequest {
 
     @Min(value = 1,groups = Marker.OnUpdate.class)

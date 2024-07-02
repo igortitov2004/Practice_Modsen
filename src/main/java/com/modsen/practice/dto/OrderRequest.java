@@ -15,6 +15,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class OrderRequest {
 
     @Min(value=1,groups = Marker.OnUpdate.class)
